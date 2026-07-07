@@ -4,6 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Enable JS-enhanced reveals; safety net keeps content visible if scripts fail -->
+  <script>
+    (function () {
+      document.documentElement.classList.add("js");
+      addEventListener("load", function () {
+        setTimeout(function () {
+          var vh = innerHeight;
+          document.querySelectorAll(".reveal:not(.in)").forEach(function (el) {
+            var r = el.getBoundingClientRect();
+            if (r.top < vh && r.bottom > 0) el.classList.add("in");
+          });
+        }, 2000);
+      });
+    })();
+  </script>
+
   <!-- Primary Meta -->
   <title>Aviv Agiv | Strategic Communications & Crisis Management</title>
   <meta name="description" content="Aviv Agiv is a strategic communications advisor and crisis-management expert, guiding leading companies, executives and public figures through the moments that define them — across the political, technological and economic arenas." />
