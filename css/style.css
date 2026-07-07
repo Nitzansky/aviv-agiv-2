@@ -861,19 +861,3 @@ body::after {
   background: rgba(255, 255, 255, 0.02);
 }
 
-/* ---------- Cursor light (interactive) ---------- */
-.cursor-glow {
-  position: fixed;
-  top: 0; left: 0;
-  width: 540px; height: 540px;
-  margin: -270px 0 0 -270px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 60;
-  background: radial-gradient(circle, rgba(198, 161, 91, 0.16), transparent 62%);
-  mix-blend-mode: screen;
-  opacity: 0;
-  transition: opacity 0.4s var(--ease);
-  will-change: transform;
-}
-.cursor-glow.on { opacity: 1; }

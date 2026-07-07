@@ -160,23 +160,6 @@
         card.style.transitionDuration = "";
       });
     });
-
-    /* ---- Cursor light that follows the pointer ---- */
-    const cursorGlow = document.createElement("div");
-    cursorGlow.className = "cursor-glow";
-    document.body.appendChild(cursorGlow);
-    let cx = 0, cy = 0, glowRaf = null;
-    window.addEventListener("pointermove", (e) => {
-      cx = e.clientX; cy = e.clientY;
-      cursorGlow.classList.add("on");
-      if (!glowRaf) {
-        glowRaf = requestAnimationFrame(() => {
-          cursorGlow.style.transform = `translate(${cx}px, ${cy}px)`;
-          glowRaf = null;
-        });
-      }
-    }, { passive: true });
-    window.addEventListener("pointerleave", () => cursorGlow.classList.remove("on"));
   }
 
   /* ---- Footer year ---- */
