@@ -51,7 +51,7 @@
     if (progress) progress.style.transform = "scaleX(" + p + ")";
 
     /* Halo drifts top -> bottom while swaying gently left/right, with a soft scale pulse */
-    if (halo && !reduceMotion) {
+    if (halo && !reduceMotion && !document.documentElement.classList.contains("a11y-stop-motion")) {
       const x = Math.sin(p * TAU * 1.5) * 20;              // vw sway
       const yy = -26 + p * 42 + Math.sin(p * TAU * 2) * 7; // vh drift
       const s = 1 + Math.sin(p * TAU) * 0.06;              // scale pulse
@@ -198,6 +198,81 @@
       }
     });
   }
+
+  /* ---- Accessibility widget (text size, contrast, spacing, etc.) ---- */
+  (function initA11y() {
+    const root = document.documentElement;
+    const widget = document.querySelector("[data-a11y]");
+    if (!widget) return;
+    const trigger = widget.querySelector(".a11y-trigger");
+    const panel = widget.querySelector(".a11y-panel");
+    const closeBtn = widget.querySelector(".a11y-close");
+    const sizeLabel = widget.querySelector("[data-a11y-size]");
+    const KEY = "avivagiv-a11y";
+    const SIZES = [100, 112, 125, 140, 160, 180];
+    const MODES = {
+      contrast: "a11y-contrast",
+      links: "a11y-links",
+      spacing: "a11y-spacing",
+      readable: "a11y-readable",
+      "stop-motion": "a11y-stop-motion",
+      "big-cursor": "a11y-big-cursor",
+    };
+
+    let state = { size: 0, modes: {} };
+    try { state = Object.assign(state, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) {}
+    state.modes = state.modes || {};
+
+    const apply = () => {
+      root.style.fontSize = SIZES[state.size] + "%";
+      if (sizeLabel) sizeLabel.textContent = SIZES[state.size] + "%";
+      Object.keys(MODES).forEach((k) => {
+        const on = !!state.modes[k];
+        root.classList.toggle(MODES[k], on);
+        const btn = widget.querySelector('[data-a11y-toggle="' + k + '"]');
+        if (btn) btn.setAttribute("aria-pressed", String(on));
+      });
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    };
+
+    const open = () => {
+      panel.hidden = false;
+      trigger.setAttribute("aria-expanded", "true");
+      closeBtn.focus();
+    };
+    const close = (returnFocus) => {
+      panel.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+      if (returnFocus) trigger.focus();
+    };
+
+    trigger.addEventListener("click", () => (panel.hidden ? open() : close(true)));
+    closeBtn.addEventListener("click", () => close(true));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !panel.hidden) close(true);
+    });
+    document.addEventListener("click", (e) => {
+      if (!widget.contains(e.target) && !panel.hidden) close(false);
+    });
+
+    widget.querySelector("[data-a11y-inc]").addEventListener("click", () => {
+      state.size = Math.min(state.size + 1, SIZES.length - 1); apply();
+    });
+    widget.querySelector("[data-a11y-dec]").addEventListener("click", () => {
+      state.size = Math.max(state.size - 1, 0); apply();
+    });
+    widget.querySelectorAll("[data-a11y-toggle]").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const k = btn.getAttribute("data-a11y-toggle");
+        state.modes[k] = !state.modes[k]; apply();
+      })
+    );
+    widget.querySelector("[data-a11y-reset]").addEventListener("click", () => {
+      state = { size: 0, modes: {} }; apply();
+    });
+
+    apply();
+  })();
 
   /* ---- Footer year ---- */
   const yearEl = document.querySelector("[data-year]");

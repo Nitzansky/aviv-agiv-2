@@ -299,10 +299,11 @@
           <div class="brand">אביב <span class="brand-mark">עגיב</span></div>
           <p>ייעוץ אסטרטגי לתקשורת וניהול משברים.</p>
         </div>
-        <nav class="footer-social" aria-label="רשתות חברתיות">
+        <nav class="footer-social" aria-label="קישורים">
           <a href="https://open.spotify.com/show/5FpuJjyAxnAxtxVJx5vIRA" target="_blank" rel="noopener">פודקאסט</a>
           <a href="#" target="_blank" rel="noopener">LinkedIn</a>
           <a href="mailto:hello@avivagiv.co.il">אימייל</a>
+          <a href="accessibility.html">הצהרת נגישות</a>
         </nav>
       </div>
       <div class="footer-bottom">
@@ -328,6 +329,39 @@
       <svg class="i-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       <svg class="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
+  </div>
+
+  <!-- Accessibility widget -->
+  <div class="a11y-widget" data-a11y>
+    <button class="a11y-trigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="a11y-panel" aria-label="תפריט נגישות">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4.3" r="1.7" fill="currentColor" stroke="none"/><path d="M5 8.2c2.2.8 4.6 1.2 7 1.2s4.8-.4 7-1.2"/><path d="M12 9.6V15"/><path d="M9 21l3-6 3 6"/></svg>
+    </button>
+    <div class="a11y-panel" id="a11y-panel" role="dialog" aria-label="הגדרות נגישות" hidden>
+      <div class="a11y-head">
+        <h2 class="a11y-title">הגדרות נגישות</h2>
+        <button class="a11y-close" type="button" aria-label="סגירת תפריט הנגישות">✕</button>
+      </div>
+      <div class="a11y-row">
+        <span id="a11y-size-label">גודל טקסט</span>
+        <div class="a11y-stepper" role="group" aria-labelledby="a11y-size-label">
+          <button type="button" data-a11y-dec aria-label="הקטנת גודל הטקסט">A−</button>
+          <span data-a11y-size aria-live="polite">100%</span>
+          <button type="button" data-a11y-inc aria-label="הגדלת גודל הטקסט">A+</button>
+        </div>
+      </div>
+      <div class="a11y-grid">
+        <button type="button" class="a11y-toggle" data-a11y-toggle="contrast" aria-pressed="false">ניגודיות גבוהה</button>
+        <button type="button" class="a11y-toggle" data-a11y-toggle="links" aria-pressed="false">הדגשת קישורים</button>
+        <button type="button" class="a11y-toggle" data-a11y-toggle="spacing" aria-pressed="false">מרווח שורות</button>
+        <button type="button" class="a11y-toggle" data-a11y-toggle="readable" aria-pressed="false">גופן קריא</button>
+        <button type="button" class="a11y-toggle" data-a11y-toggle="stop-motion" aria-pressed="false">עצירת אנימציות</button>
+        <button type="button" class="a11y-toggle" data-a11y-toggle="big-cursor" aria-pressed="false">סמן גדול</button>
+      </div>
+      <div class="a11y-foot">
+        <button type="button" class="a11y-reset" data-a11y-reset>איפוס הגדרות</button>
+        <a href="accessibility.html" class="a11y-statement-link">הצהרת נגישות</a>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>

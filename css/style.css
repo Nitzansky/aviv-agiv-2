@@ -1018,3 +1018,168 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .fab-action { transition: opacity 0.2s; }
 }
+
+/* ==========================================================================
+   Accessibility widget + user setting modes + statement page
+   ========================================================================== */
+.a11y-widget {
+  position: fixed;
+  inset-block-end: 1.15rem;
+  inset-inline-start: 1.15rem;
+  z-index: 120;
+}
+.a11y-trigger {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--accent);
+  color: #0b0b0d;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.25s var(--ease), background 0.25s var(--ease);
+}
+.a11y-trigger:hover { background: var(--accent-2); }
+.a11y-trigger:active { transform: scale(0.95); }
+.a11y-trigger svg { width: 27px; height: 27px; }
+
+.a11y-panel {
+  position: absolute;
+  inset-block-end: calc(100% + 12px);
+  inset-inline-start: 0;
+  width: min(300px, calc(100vw - 2.3rem));
+  background: var(--bg-elev-2);
+  border: 1px solid var(--line-ui);
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+  padding: 1.1rem;
+}
+.a11y-panel[hidden] { display: none; }
+.a11y-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.a11y-title { font-family: var(--font-body); font-size: 1.05rem; font-weight: 600; letter-spacing: 0; }
+.a11y-close {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--line-ui);
+  display: grid; place-items: center;
+}
+.a11y-close:hover { background: var(--bg-elev); }
+
+.a11y-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem; margin-bottom: 0.9rem; font-size: 0.92rem;
+}
+.a11y-stepper { display: inline-flex; align-items: center; gap: 0.4rem; }
+.a11y-stepper button {
+  min-width: 40px; height: 40px; padding: 0 0.5rem;
+  border-radius: 8px; border: 1px solid var(--line-ui);
+  font-weight: 600; font-size: 0.95rem;
+}
+.a11y-stepper button:hover { background: var(--accent); color: #0b0b0d; border-color: var(--accent); }
+.a11y-stepper [data-a11y-size] { min-width: 48px; text-align: center; font-variant-numeric: tabular-nums; }
+
+.a11y-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem; }
+.a11y-toggle {
+  padding: 0.65rem 0.5rem;
+  border-radius: 9px;
+  border: 1px solid var(--line-ui);
+  font-size: 0.85rem; text-align: center;
+  color: var(--text);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.a11y-toggle:hover { border-color: var(--accent); }
+.a11y-toggle[aria-pressed="true"] {
+  background: var(--accent); color: #0b0b0d;
+  border-color: var(--accent); font-weight: 600;
+}
+
+.a11y-foot { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.a11y-reset { font-size: 0.85rem; color: var(--text-dim); text-decoration: underline; text-underline-offset: 3px; }
+.a11y-reset:hover { color: var(--text); }
+.a11y-statement-link { font-size: 0.85rem; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---- User setting modes (applied to <html>) ---- */
+html.a11y-contrast {
+  --bg: #000000; --bg-elev: #000000; --bg-elev-2: #0a0a0a;
+  --text: #ffffff; --text-dim: #ffffff; --text-mute: #ffffff;
+  --accent: #ffe000; --accent-2: #ffe000;
+  --line: #ffffff; --line-soft: #cccccc; --line-ui: #ffffff;
+}
+html.a11y-contrast body { background: #000 !important; }
+html.a11y-contrast body::before,
+html.a11y-contrast body::after,
+html.a11y-contrast .page-halo { display: none !important; }
+html.a11y-contrast .service,
+html.a11y-contrast .podcast-card,
+html.a11y-contrast .stats,
+html.a11y-contrast .field input,
+html.a11y-contrast .field textarea,
+html.a11y-contrast .a11y-panel { background: #000 !important; }
+html.a11y-contrast .btn-primary,
+html.a11y-contrast .a11y-trigger,
+html.a11y-contrast .a11y-toggle[aria-pressed="true"] { background: #ffe000 !important; color: #000 !important; }
+
+html.a11y-links a {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+html.a11y-spacing p,
+html.a11y-spacing li,
+html.a11y-spacing .lead,
+html.a11y-spacing .hero-desc,
+html.a11y-spacing label,
+html.a11y-spacing .service p {
+  line-height: 1.9 !important;
+  letter-spacing: 0.06em !important;
+  word-spacing: 0.16em !important;
+}
+html.a11y-spacing p { margin-bottom: 1.7em !important; }
+
+html.a11y-readable,
+html.a11y-readable button,
+html.a11y-readable input,
+html.a11y-readable textarea,
+html.a11y-readable h1, html.a11y-readable h2, html.a11y-readable h3,
+html.a11y-readable .hero-title,
+html.a11y-readable .brand,
+html.a11y-readable .statement q,
+html.a11y-readable .display {
+  font-family: Arial, "Assistant", "Helvetica Neue", sans-serif !important;
+  letter-spacing: normal !important;
+  font-style: normal !important;
+}
+
+html.a11y-stop-motion *,
+html.a11y-stop-motion *::before,
+html.a11y-stop-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+html.a11y-big-cursor, html.a11y-big-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24'%3E%3Cpath d='M5 2v18l5-5 3 7 3-1-3-7h7z' fill='%23000' stroke='%23fff' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 5 2, auto !important;
+}
+
+/* ---- Accessibility statement page ---- */
+.legal { max-width: 760px; }
+.legal h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+:root[lang="he"] .legal h1 { font-weight: 500; }
+.legal h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.35rem, 1.1rem + 1vw, 1.7rem);
+  margin: 2.25rem 0 0.6rem;
+}
+:root[lang="he"] .legal h2 { font-weight: 500; }
+.legal p, .legal li { color: var(--text-dim); line-height: 1.8; }
+.legal p { margin-bottom: 0.75rem; }
+.legal ul { list-style: disc; padding-inline-start: 1.4em; margin: 0.5rem 0 1rem; display: grid; gap: 0.4rem; }
+.legal a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.legal .updated { color: var(--text-mute); font-size: 0.9rem; margin-top: 2.5rem; }

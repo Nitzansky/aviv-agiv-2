@@ -8,10 +8,12 @@ Built as a fast, dependency-free static site — perfect SEO, works everywhere.
 ## Structure
 
 ```
-index.html      Hebrew homepage (RTL) — primary / default
-en.html         English homepage (LTR)
+index.html            Hebrew homepage (RTL) — primary / default
+en.html               English homepage (LTR)
+accessibility.html    Accessibility statement (Hebrew)
+accessibility-en.html Accessibility statement (English)
 css/style.css   Full design system (shared)
-js/main.js      Scroll reveals, sticky nav, mobile menu (shared)
+js/main.js      Scroll reveals, sticky nav, mobile menu, accessibility widget (shared)
 assets/         favicon + social-share (OG) image
 robots.txt      Crawler directives
 sitemap.xml     Sitemap with hreflang alternates
@@ -36,6 +38,10 @@ Search & replace across `index.html`, `en.html`, `sitemap.xml`, `robots.txt`:
    Replace `972500000000` (in both `index.html` and `en.html`) with the real
    number in international format, no `+` or spaces (e.g. `972541234567`).
 4. **LinkedIn** — the `#` LinkedIn links in the footer → real profile URL.
+5. **Accessibility coordinator** — in `accessibility.html` and
+   `accessibility-en.html`, fill in `[Accessibility coordinator name]` /
+   `[שם רכז/ת הנגישות]` and the `[Phone number]` / `tel:+972...` placeholders
+   (legally required for the Israeli accessibility statement).
 4. **Podcast** — the Spotify link points to a public "אביב מתעורר" show; confirm
    it's the correct one and update if needed.
 5. **Contact form** — currently front-end only (shows a thank-you, sends nothing).
@@ -66,3 +72,8 @@ Search & replace across `index.html`, `en.html`, `sitemap.xml`, `robots.txt`:
   and an `aria-live` status message on submit.
 - Decorative motion/graphics are hidden from assistive tech and paused under
   `prefers-reduced-motion`; the animated stat counters expose a static value.
+- **Accessibility widget** on every page (person icon, bottom corner): text-size
+  steps, high contrast, highlight links, text spacing, readable font, pause
+  motion, large cursor, and reset. Choices persist in `localStorage` across
+  pages. Linked from a dedicated **Accessibility Statement** page in both
+  languages (referencing WCAG 2.2 AA and Israeli Standard IS 5568).
