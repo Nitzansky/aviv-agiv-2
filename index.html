@@ -63,6 +63,7 @@
 </head>
 <body>
   <a href="#main" class="visually-hidden" style="position:absolute;inset-inline-start:-999px">דלג לתוכן</a>
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- Header -->
   <header class="site-header">
@@ -90,15 +91,21 @@
     <!-- Hero -->
     <section class="hero" id="hero">
       <div class="hero-glow" aria-hidden="true"></div>
-      <div class="container">
-        <div class="hero-inner">
+      <div class="container hero-grid">
+        <div class="hero-main">
           <span class="eyebrow reveal">ייעוץ אסטרטגי · ניהול משברים</span>
-          <h1 class="reveal" data-delay="1">אביב <span class="accent">עגיב</span></h1>
-          <p class="hero-sub reveal" data-delay="2">מעצבים את הסיפור — לפני שהוא מעצב אתכם.</p>
-          <div class="hero-cta reveal" data-delay="3">
+          <h1 class="hero-title">
+            <span class="mask"><span>אביב</span></span>
+            <span class="mask"><span class="accent">עגיב</span></span>
+          </h1>
+          <div class="hero-cta reveal" data-delay="2">
             <a href="#contact" class="btn btn-primary">בואו נדבר <span class="btn-arrow">→</span></a>
             <a href="#services" class="btn btn-ghost">תחומי הייעוץ</a>
           </div>
+        </div>
+        <div class="hero-aside reveal" data-delay="3">
+          <p class="hero-sub">מעצבים את הסיפור — לפני שהוא מעצב אתכם.</p>
+          <p class="hero-desc">ליווי חברות מובילות, מנהלים בכירים ודמויות ציבוריות ברגעים המגדירים אותם — בזירה הפוליטית, הטכנולוגית והכלכלית.</p>
         </div>
       </div>
       <a href="#about" class="scroll-cue" aria-label="גלול אל התוכן"><span class="line" aria-hidden="true"></span> גללו</a>
@@ -175,6 +182,26 @@
             <h3>נרטיב ומסרים</h3>
             <p>הפיכת מציאות מורכבת לסיפור ברור, אמין ובלתי נשכח.</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="section stats" id="stats" aria-label="במספרים">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat reveal">
+            <div class="n" data-count="10" data-suffix="+">0</div>
+            <div class="l">שנות ניסיון</div>
+          </div>
+          <div class="stat reveal" data-delay="1">
+            <div class="n" data-count="5">0</div>
+            <div class="l">זירות פעילות</div>
+          </div>
+          <div class="stat reveal" data-delay="2">
+            <div class="n" data-count="30" data-suffix="+">0</div>
+            <div class="l">פרקי פודקאסט</div>
+          </div>
         </div>
       </div>
     </section>
@@ -259,6 +286,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
