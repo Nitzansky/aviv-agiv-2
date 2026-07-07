@@ -200,6 +200,11 @@ ul { list-style: none; }
 .nav-links a:hover { color: var(--text); }
 .nav-links a:hover::after { transform: scaleX(1); }
 
+/* The primary button in the nav must stay dark-on-gold, not inherit nav link colors */
+.nav-links a.btn-primary,
+.nav-links a.btn-primary:hover { color: #0b0b0d; }
+.nav-links a.btn::after { display: none; }
+
 .nav-actions { display: flex; align-items: center; gap: 1rem; }
 
 .lang-toggle {
