@@ -52,3 +52,17 @@ Search & replace across `index.html`, `en.html`, `sitemap.xml`, `robots.txt`:
   `og:image` / `twitter:image` tags.
 - Fully responsive, RTL/LTR aware, keyboard-accessible, and respects
   `prefers-reduced-motion`.
+
+## Accessibility (WCAG 2.2 AA)
+
+- Skip-to-content link (visible on focus); `<main>` is a focus target.
+- Semantic landmarks (`header`/`nav`/`main`/`footer`), logical heading order,
+  and `lang` on the page plus on individual foreign-language snippets.
+- All text meets AA contrast (≥4.5:1); UI borders/focus rings meet ≥3:1.
+- Visible focus indicators everywhere; menus and the mobile launcher are
+  operable by keyboard and close on `Esc` with focus returned to the trigger.
+- Accessible contact form: associated labels, required indicators,
+  inline error messages (icon + text, not colour alone), `aria-invalid`,
+  and an `aria-live` status message on submit.
+- Decorative motion/graphics are hidden from assistive tech and paused under
+  `prefers-reduced-motion`; the animated stat counters expose a static value.

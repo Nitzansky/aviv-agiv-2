@@ -75,6 +75,12 @@
   if (menuToggle && navLinks) {
     menuToggle.addEventListener("click", () => setMenu(!body.classList.contains("menu-open")));
     navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && body.classList.contains("menu-open")) {
+        setMenu(false);
+        menuToggle.focus();
+      }
+    });
   }
 
   /* ---- Scroll reveal ---- */
@@ -185,20 +191,72 @@
     document.addEventListener("click", (e) => {
       if (!fab.contains(e.target)) setFab(false);
     });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && fab.classList.contains("open")) {
+        setFab(false);
+        fabToggle.focus();
+      }
+    });
   }
 
   /* ---- Footer year ---- */
   const yearEl = document.querySelector("[data-year]");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---- Graceful contact form (no backend) ---- */
+  /* ---- Accessible contact form (client-side validation, no backend) ---- */
   const form = document.querySelector(".contact-form");
   if (form) {
+    const status = form.querySelector(".form-status");
+    const fields = Array.from(form.querySelectorAll("input, textarea"));
+    const isHe = document.documentElement.lang === "he";
+    const T = {
+      required: isHe ? "נא למלא שדה זה." : "Please fill in this field.",
+      email: isHe ? "נא להזין כתובת אימייל תקינה." : "Please enter a valid email address.",
+    };
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const errEl = (f) => document.getElementById(f.getAttribute("aria-describedby"));
+    const showError = (f, msg) => {
+      f.setAttribute("aria-invalid", "true");
+      const el = errEl(f);
+      if (el) { el.textContent = msg; el.hidden = false; }
+    };
+    const clearError = (f) => {
+      f.removeAttribute("aria-invalid");
+      const el = errEl(f);
+      if (el) { el.textContent = ""; el.hidden = true; }
+    };
+    const validateField = (f) => {
+      const val = f.value.trim();
+      if (!val) { showError(f, T.required); return false; }
+      if (f.type === "email" && !emailRe.test(val)) { showError(f, T.email); return false; }
+      clearError(f);
+      return true;
+    };
+
+    // Re-validate a field as the user corrects it (only once it's been flagged)
+    fields.forEach((f) =>
+      f.addEventListener("input", () => {
+        if (f.getAttribute("aria-invalid") === "true") validateField(f);
+      })
+    );
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
+      let firstInvalid = null;
+      fields.forEach((f) => {
+        if (!validateField(f) && !firstInvalid) firstInvalid = f;
+      });
+      if (firstInvalid) {
+        if (status) status.textContent = "";
+        firstInvalid.focus();
+        return;
+      }
+      if (status) status.textContent = form.getAttribute("data-thanks") || "Thank you — I'll be in touch.";
+      form.reset();
+      fields.forEach(clearError);
       const btn = form.querySelector('button[type="submit"]');
-      const done = form.getAttribute("data-thanks") || "Thank you — I'll be in touch.";
-      if (btn) { btn.disabled = true; btn.textContent = done; }
+      if (btn) btn.disabled = true;
     });
   }
 })();
