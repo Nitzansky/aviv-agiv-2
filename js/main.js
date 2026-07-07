@@ -167,6 +167,26 @@
     });
   }
 
+  /* ---- Floating contact launcher (mobile) ---- */
+  const fab = document.querySelector("[data-fab]");
+  if (fab) {
+    const fabToggle = fab.querySelector(".fab-toggle");
+    const setFab = (open) => {
+      fab.classList.toggle("open", open);
+      fabToggle.setAttribute("aria-expanded", String(open));
+    };
+    fabToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setFab(!fab.classList.contains("open"));
+    });
+    fab.querySelectorAll(".fab-action").forEach((a) =>
+      a.addEventListener("click", () => setFab(false))
+    );
+    document.addEventListener("click", (e) => {
+      if (!fab.contains(e.target)) setFab(false);
+    });
+  }
+
   /* ---- Footer year ---- */
   const yearEl = document.querySelector("[data-year]");
   if (yearEl) yearEl.textContent = new Date().getFullYear();

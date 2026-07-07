@@ -32,7 +32,10 @@ Search & replace across `index.html`, `en.html`, `sitemap.xml`, `robots.txt`:
 1. **Domain** — `https://avivagiv.co.il` → your real domain (used in canonical,
    hreflang, Open Graph, sitemap, structured data).
 2. **Email** — `hello@avivagiv.co.il` → real contact email.
-3. **LinkedIn** — the `#` LinkedIn links in the footer → real profile URL.
+3. **WhatsApp number** — the floating mobile launcher links to `https://wa.me/972500000000`.
+   Replace `972500000000` (in both `index.html` and `en.html`) with the real
+   number in international format, no `+` or spaces (e.g. `972541234567`).
+4. **LinkedIn** — the `#` LinkedIn links in the footer → real profile URL.
 4. **Podcast** — the Spotify link points to a public "אביב מתעורר" show; confirm
    it's the correct one and update if needed.
 5. **Contact form** — currently front-end only (shows a thank-you, sends nothing).

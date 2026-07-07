@@ -875,3 +875,79 @@ body::after {
   background: rgba(255, 255, 255, 0.02);
 }
 
+
+/* ==========================================================================
+   Floating contact launcher (mobile only) — slides out WhatsApp + email
+   ========================================================================== */
+.fab {
+  position: fixed;
+  inset-block-end: 1.15rem;
+  inset-inline-end: 1.15rem;
+  z-index: 90;
+  display: none;
+}
+@media (max-width: 860px) { .fab { display: block; } }
+
+.fab-toggle {
+  position: relative;
+  z-index: 2;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #0b0b0d;
+  background: var(--accent);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.fab-toggle:active { transform: scale(0.94); }
+.fab-toggle svg { width: 26px; height: 26px; }
+.fab-toggle .i-close { display: none; }
+.fab.open .fab-toggle { background: var(--bg-elev-2); color: var(--text); }
+.fab.open .fab-toggle .i-open { display: none; }
+.fab.open .fab-toggle .i-close { display: block; }
+
+.fab-action {
+  position: absolute;
+  inset-inline-end: 4px;
+  inset-block-end: 4px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateY(8px) scale(0.7);
+  pointer-events: none;
+  transition: transform 0.35s var(--ease), opacity 0.3s var(--ease);
+}
+.fab-action svg { width: 24px; height: 24px; }
+.fab-wa { background: #25d366; }
+.fab-mail { background: var(--accent); color: #0b0b0d; }
+.fab.open .fab-action { opacity: 1; pointer-events: auto; }
+.fab.open .fab-wa   { transform: translateY(-66px) scale(1); }
+.fab.open .fab-mail { transform: translateY(-122px) scale(1); }
+
+.fab-label {
+  position: absolute;
+  inset-inline-end: 58px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.8rem;
+  color: var(--text);
+  background: var(--bg-elev-2);
+  border: 1px solid var(--line);
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+}
+.fab.open .fab-label { opacity: 1; transition-delay: 0.15s; }
+@media (prefers-reduced-motion: reduce) {
+  .fab-action { transition: opacity 0.2s; }
+}
