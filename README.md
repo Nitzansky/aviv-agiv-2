@@ -1,0 +1,51 @@
+# Aviv Agiv — אביב עגיב
+
+Elegant, minimal, bilingual (Hebrew / English) one-page site for Aviv Agiv,
+strategic communications & crisis-management advisor.
+
+Built as a fast, dependency-free static site — perfect SEO, works everywhere.
+
+## Structure
+
+```
+index.html      Hebrew homepage (RTL) — primary / default
+en.html         English homepage (LTR)
+css/style.css   Full design system (shared)
+js/main.js      Scroll reveals, sticky nav, mobile menu (shared)
+assets/         favicon + social-share (OG) image
+robots.txt      Crawler directives
+sitemap.xml     Sitemap with hreflang alternates
+```
+
+## Preview locally
+
+```bash
+cd aviv-agiv
+python3 -m http.server 8080
+# open http://localhost:8080
+```
+
+## Before going live — replace the placeholders
+
+Search & replace across `index.html`, `en.html`, `sitemap.xml`, `robots.txt`:
+
+1. **Domain** — `https://avivagiv.co.il` → your real domain (used in canonical,
+   hreflang, Open Graph, sitemap, structured data).
+2. **Email** — `hello@avivagiv.co.il` → real contact email.
+3. **LinkedIn** — the `#` LinkedIn links in the footer → real profile URL.
+4. **Podcast** — the Spotify link points to a public "אביב מתעורר" show; confirm
+   it's the correct one and update if needed.
+5. **Contact form** — currently front-end only (shows a thank-you, sends nothing).
+   Wire it to a backend or a service like Formspree / Getform, or replace with a
+   `mailto:`. See `js/main.js`.
+
+## Notes
+
+- **Fonts** are loaded from Google Fonts (Fraunces + Frank Ruhl Libre for display,
+  Inter + Assistant for body). No other external dependencies.
+- **OG image** is an SVG (`assets/og-image.svg`). Some social platforms
+  (e.g. X/Twitter, iMessage) don't render SVG previews — for maximum
+  compatibility, export it to a 1200×630 `og-image.jpg` and update the two
+  `og:image` / `twitter:image` tags.
+- Fully responsive, RTL/LTR aware, keyboard-accessible, and respects
+  `prefers-reduced-motion`.

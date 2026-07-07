@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="g" cx="50%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#1c1710"/>
+      <stop offset="55%" stop-color="#0b0b0d"/>
+      <stop offset="100%" stop-color="#0b0b0d"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <rect x="1" y="1" width="1198" height="628" fill="none" stroke="#c6a15b" stroke-opacity="0.18"/>
+  <text x="80" y="120" font-family="Inter, sans-serif" font-size="22" letter-spacing="6"
+        fill="#c6a15b" text-transform="uppercase">STRATEGIC ADVISORY · CRISIS MANAGEMENT</text>
+  <text x="76" y="345" font-family="Georgia, 'Fraunces', serif" font-size="150" fill="#ece9e2">Aviv <tspan fill="#c6a15b" font-style="italic">Agiv</tspan></text>
+  <text x="80" y="430" font-family="Inter, sans-serif" font-size="34" fill="#a6a29a">Shaping the story — before it shapes you.</text>
+  <text x="80" y="560" font-family="Georgia, serif" font-size="26" fill="#6f6c66">אביב עגיב · ייעוץ אסטרטגי לתקשורת וניהול משברים</text>
+</svg>
