@@ -142,20 +142,41 @@
       btn.addEventListener("pointerleave", () => { btn.style.transform = ""; });
     });
 
-    /* ---- Subtle 3D tilt on service cards ---- */
+    /* ---- Subtle 3D tilt + glass reflection on service cards ---- */
     document.querySelectorAll(".service").forEach((card) => {
       card.addEventListener("pointermove", (e) => {
         const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
+        const rx = e.clientX - r.left;
+        const ry = e.clientY - r.top;
+        const px = rx / r.width - 0.5;
+        const py = ry / r.height - 0.5;
         card.style.transform = `rotateY(${px * 5}deg) rotateX(${-py * 5}deg) translateZ(6px)`;
         card.style.transitionDuration = "0.08s";
+        card.style.setProperty("--mx", rx + "px");
+        card.style.setProperty("--my", ry + "px");
       });
       card.addEventListener("pointerleave", () => {
         card.style.transform = "";
         card.style.transitionDuration = "";
       });
     });
+
+    /* ---- Cursor light that follows the pointer ---- */
+    const cursorGlow = document.createElement("div");
+    cursorGlow.className = "cursor-glow";
+    document.body.appendChild(cursorGlow);
+    let cx = 0, cy = 0, glowRaf = null;
+    window.addEventListener("pointermove", (e) => {
+      cx = e.clientX; cy = e.clientY;
+      cursorGlow.classList.add("on");
+      if (!glowRaf) {
+        glowRaf = requestAnimationFrame(() => {
+          cursorGlow.style.transform = `translate(${cx}px, ${cy}px)`;
+          glowRaf = null;
+        });
+      }
+    }, { passive: true });
+    window.addEventListener("pointerleave", () => cursorGlow.classList.remove("on"));
   }
 
   /* ---- Footer year ---- */
