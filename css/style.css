@@ -278,7 +278,7 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
 .hero-glow {
   position: absolute;
   inset-block-start: -25%;
-  inset-inline-start: 50%;
+  left: 50%;
   transform: translateX(-50%) translateY(var(--py, 0));
   width: min(1100px, 120vw);
   aspect-ratio: 1;
