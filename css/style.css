@@ -338,34 +338,6 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   .mask > span { animation: none; transform: none; }
 }
 
-.scroll-cue {
-  position: absolute;
-  inset-block-end: 2.25rem;
-  inset-inline-start: var(--gutter);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-mute);
-  transition: color 0.3s var(--ease);
-}
-.scroll-cue:hover { color: var(--text); }
-.scroll-cue:hover .line { width: 64px; }
-.scroll-cue .line { transition: width 0.35s var(--ease); }
-.scroll-cue .line {
-  width: 46px; height: 1px;
-  background: linear-gradient(to right, var(--accent), transparent);
-  position: relative; overflow: hidden;
-}
-.scroll-cue .line::after {
-  content: ""; position: absolute; inset: 0;
-  width: 40%; background: var(--accent);
-  animation: cueSlide 2.4s var(--ease) infinite;
-}
-@keyframes cueSlide { 0% { transform: translateX(-100%); } 100% { transform: translateX(300%); } }
-
 /* ---------- Section heading block ---------- */
 .section-head {
   display: grid;
@@ -696,7 +668,7 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
 .reveal[data-delay="5"] { transition-delay: 0.40s; }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  .scroll-cue .line::after, .podcast-card .waveform span { animation: none; }
+  .podcast-card .waveform span { animation: none; }
 }
 
 /* ---------- Mobile nav overlay ---------- */
