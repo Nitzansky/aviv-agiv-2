@@ -779,7 +779,7 @@ html.lenis, html.lenis body { height: auto; }
   content: "";
   position: absolute;
   inset-block: 0;
-  inset-inline-start: 0;
+  left: 0;
   width: 22%;
   background: linear-gradient(90deg, transparent, var(--accent-2), transparent);
   filter: blur(0.5px);
@@ -791,7 +791,7 @@ html.lenis, html.lenis body { height: auto; }
   100% { transform: translateX(600%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .glow-line::after { animation: none; opacity: 0.5; inset-inline-start: 40%; }
+  .glow-line::after { animation: none; opacity: 0.5; left: 40%; }
 }
 
 /* Thin accent glow already used by statement borders — make them glow too */
