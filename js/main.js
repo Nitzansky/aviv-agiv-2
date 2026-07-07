@@ -36,26 +36,31 @@
     });
   });
 
-  /* ---- Scroll-driven UI: header state, progress bar, hero parallax ---- */
+  /* ---- Scroll-driven UI: header state, progress bar, traveling halo ---- */
   const progress = document.querySelector(".scroll-progress");
-  const glow = document.querySelector(".hero-glow");
-  const hero = document.querySelector(".hero");
+  const halo = document.querySelector(".page-halo");
+  const TAU = Math.PI * 2;
 
   const onScroll = (scrollY) => {
     const y = typeof scrollY === "number" ? scrollY : window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? Math.min(Math.max(y / max, 0), 1) : 0;
 
     header.classList.toggle("scrolled", y > 24);
 
-    if (progress) {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      progress.style.transform = "scaleX(" + (max > 0 ? y / max : 0) + ")";
-    }
-    if (glow && hero && y < hero.offsetHeight) {
-      glow.style.setProperty("--py", y * 0.2 + "px");
+    if (progress) progress.style.transform = "scaleX(" + p + ")";
+
+    /* Halo drifts top -> bottom while swaying gently left/right, with a soft scale pulse */
+    if (halo && !reduceMotion) {
+      const x = Math.sin(p * TAU * 1.5) * 20;              // vw sway
+      const yy = -26 + p * 42 + Math.sin(p * TAU * 2) * 7; // vh drift
+      const s = 1 + Math.sin(p * TAU) * 0.06;              // scale pulse
+      halo.style.transform = `translate(${x}vw, ${yy}vh) scale(${s})`;
     }
   };
   if (lenis) lenis.on("scroll", ({ scroll }) => onScroll(scroll));
   else window.addEventListener("scroll", () => onScroll(), { passive: true });
+  window.addEventListener("resize", () => onScroll(), { passive: true });
   onScroll(0);
 
   /* ---- Mobile menu ---- */

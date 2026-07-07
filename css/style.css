@@ -275,18 +275,7 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   position: relative;
   overflow: hidden;
 }
-.hero-glow {
-  position: absolute;
-  inset-block-start: -25%;
-  left: 50%;
-  transform: translateX(-50%) translateY(var(--py, 0));
-  width: min(1100px, 120vw);
-  aspect-ratio: 1;
-  background: radial-gradient(circle, rgba(198,161,91,0.16), transparent 62%);
-  filter: blur(30px);
-  pointer-events: none;
-  z-index: 0;
-}
+/* Page-wide ambient halo that travels on scroll (set in .page-halo below) */
 .hero-grid {
   position: relative;
   z-index: 2;
@@ -815,6 +804,26 @@ html.lenis, html.lenis body { height: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .statement::before, .statement::after { animation: none; }
+}
+
+/* ---------- Traveling ambient halo (whole page, scroll-driven) ---------- */
+.page-halo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 85vmax;
+  height: 85vmax;
+  margin: -42.5vmax 0 0 -42.5vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(198, 161, 91, 0.17),
+    rgba(198, 161, 91, 0.06) 34%,
+    transparent 62%);
+  filter: blur(42px);
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(0, -26vh);
+  will-change: transform;
 }
 
 /* ---------- Liquid glass background (whole page) ---------- */
