@@ -274,6 +274,39 @@
     apply();
   })();
 
+  /* ---- Theme toggle (dark by default, light opt-in, persisted) ---- */
+  (function initTheme() {
+    const root = document.documentElement;
+    const toggle = document.querySelector("[data-theme-toggle]");
+    if (!toggle) return;
+    const KEY = "avivagiv-theme";
+    const meta = document.querySelector('meta[name="theme-color"]');
+    const COLORS = { dark: "#0b0b0d", light: "#f7f4ec" };
+    const isHe = root.lang === "he";
+    const LABEL = {
+      dark: isHe ? "מעבר לתצוגה בהירה" : "Switch to light view",
+      light: isHe ? "מעבר לתצוגה כהה" : "Switch to dark view",
+    };
+
+    const apply = (theme) => {
+      if (theme === "light") root.setAttribute("data-theme", "light");
+      else root.removeAttribute("data-theme");
+      toggle.setAttribute("aria-pressed", String(theme === "light"));
+      toggle.setAttribute("aria-label", LABEL[theme]);
+      if (meta) meta.setAttribute("content", COLORS[theme]);
+    };
+
+    let theme = "dark";
+    try { if (localStorage.getItem(KEY) === "light") theme = "light"; } catch (e) {}
+    apply(theme);
+
+    toggle.addEventListener("click", () => {
+      theme = theme === "light" ? "dark" : "light";
+      apply(theme);
+      try { localStorage.setItem(KEY, theme); } catch (e) {}
+    });
+  })();
+
   /* ---- Footer year ---- */
   const yearEl = document.querySelector("[data-year]");
   if (yearEl) yearEl.textContent = new Date().getFullYear();

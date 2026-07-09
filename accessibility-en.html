@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    try {
+      if (localStorage.getItem("avivagiv-theme") === "light") document.documentElement.setAttribute("data-theme", "light");
+    } catch (e) {}
+    document.documentElement.classList.add("js");
+  </script>
   <title>Accessibility Statement | Aviv Agiv</title>
   <meta name="description" content="Accessibility statement for the Aviv Agiv website — conformance with WCAG 2.2 Level AA and Israeli Standard IS 5568." />
   <meta name="robots" content="index, follow" />
@@ -24,6 +29,10 @@
     <nav class="nav container" aria-label="Primary">
       <a href="en.html" class="brand">Aviv <span class="brand-mark">Agiv</span></a>
       <div class="nav-actions">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to light view">
+          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/></svg>
+        </button>
         <a href="accessibility.html" class="lang-toggle" lang="he" aria-label="הצהרת נגישות בעברית">עב</a>
         <a href="en.html" class="btn btn-ghost">Back to site</a>
       </div>
