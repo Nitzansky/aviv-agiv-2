@@ -888,14 +888,27 @@ html.lenis, html.lenis body { height: auto; }
   margin: -42.5vmax 0 0 -42.5vmax;
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(198, 161, 91, 0.17),
-    rgba(198, 161, 91, 0.06) 34%,
+    rgba(198, 161, 91, 0.32),
+    rgba(198, 161, 91, 0.13) 34%,
     transparent 62%);
   filter: blur(42px);
   pointer-events: none;
   z-index: 0;
   transform: translate(0, -26vh);
   will-change: transform;
+}
+
+@media (max-width: 640px) {
+  .page-halo {
+    width: 110vmax;
+    height: 110vmax;
+    margin: -55vmax 0 0 -55vmax;
+    background: radial-gradient(circle,
+      rgba(198, 161, 91, 0.42),
+      rgba(198, 161, 91, 0.18) 34%,
+      transparent 64%);
+    filter: blur(36px);
+  }
 }
 
 /* ---------- Liquid glass background (whole page) ---------- */
