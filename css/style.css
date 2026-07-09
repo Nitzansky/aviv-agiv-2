@@ -1255,18 +1255,18 @@ html.a11y-big-cursor, html.a11y-big-cursor * {
 :root[data-theme="light"] .field textarea:focus { background: rgba(24, 20, 12, 0.06); }
 :root[data-theme="light"] .btn-ghost { background: rgba(24, 20, 12, 0.025); }
 
-/* Halo: full brightness reads as a stain on a light page — dial back */
+/* Halo: same gold glow as dark mode, tuned so it reads as a glow, not a stain */
 :root[data-theme="light"] .page-halo {
   background: radial-gradient(circle,
-    rgba(147, 112, 47, 0.16),
-    rgba(147, 112, 47, 0.06) 34%,
+    rgba(198, 161, 91, 0.55),
+    rgba(198, 161, 91, 0.22) 34%,
     transparent 62%);
 }
 @media (max-width: 640px) {
   :root[data-theme="light"] .page-halo {
     background: radial-gradient(circle,
-      rgba(147, 112, 47, 0.22),
-      rgba(147, 112, 47, 0.09) 34%,
+      rgba(198, 161, 91, 0.65),
+      rgba(198, 161, 91, 0.28) 34%,
       transparent 64%);
   }
 }
