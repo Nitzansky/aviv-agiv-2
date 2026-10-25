@@ -49,6 +49,7 @@
     header.classList.toggle("scrolled", y > 24);
 
     if (progress) progress.style.transform = "scaleX(" + p + ")";
+    document.documentElement.style.setProperty("--scroll", p.toFixed(4));
 
     /* Halo drifts top -> bottom while swaying gently left/right, with a soft scale pulse */
     if (halo && !reduceMotion && !document.documentElement.classList.contains("a11y-stop-motion")) {
@@ -139,6 +140,39 @@
       s.style.height = 14 + Math.abs(Math.sin(i * 0.9)) * 40 + "px";
       wave.appendChild(s);
     }
+  }
+
+  /* ---- Gallery lightbox (native <dialog>: Esc, focus trap and top layer for free) ---- */
+  const lightbox = document.querySelector(".lightbox");
+  const thumbs = Array.from(document.querySelectorAll("[data-gallery-index]"));
+  if (lightbox && thumbs.length && typeof lightbox.showModal === "function") {
+    const big = lightbox.querySelector(".lightbox-img");
+    let current = 0;
+    const show = (i) => {
+      current = (i + thumbs.length) % thumbs.length;
+      const img = thumbs[current].querySelector("img");
+      big.src = img.currentSrc || img.src;
+      big.alt = img.alt;
+    };
+    thumbs.forEach((btn, i) => btn.addEventListener("click", () => {
+      show(i);
+      lightbox.showModal();
+      if (lenis) lenis.stop();
+    }));
+    lightbox.addEventListener("close", () => {
+      if (lenis) lenis.start();
+      thumbs[current].focus();
+    });
+    lightbox.querySelector("[data-lightbox-close]").addEventListener("click", () => lightbox.close());
+    lightbox.querySelector("[data-lightbox-prev]").addEventListener("click", () => show(current - 1));
+    lightbox.querySelector("[data-lightbox-next]").addEventListener("click", () => show(current + 1));
+    /* click on the dimmed area (the dialog box itself, not its children) closes */
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) lightbox.close(); });
+    lightbox.addEventListener("keydown", (e) => {
+      /* RTL: the right arrow moves to the previous photo */
+      if (e.key === "ArrowRight") show(current - 1);
+      if (e.key === "ArrowLeft") show(current + 1);
+    });
   }
 
   /* ---- Magnetic buttons (hover-capable pointers only) ---- */

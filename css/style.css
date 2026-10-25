@@ -355,6 +355,17 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
 :root[lang="he"] .hero-title { font-weight: 500; letter-spacing: -0.01em; line-height: 1.02; }
 .hero-title .accent { color: var(--accent); font-style: italic; }
 :root[lang="he"] .hero-title .accent { font-style: normal; }
+/* podcast-cover treatment: heavy sans, accent word drawn as a glowing cyan outline */
+:root[lang="he"] .hero-title { font-family: "Assistant", var(--font-body); font-weight: 800; letter-spacing: 0; }
+/* the font's glyphs are built from overlapping contours; an opaque fill painted over the stroke
+   hides the inner overlap lines, so the stroke is doubled to keep the visible outline width */
+:root[lang="he"] .hero-title .accent {
+  color: var(--bg);
+  paint-order: stroke fill;
+  -webkit-text-stroke: clamp(3px, 0.44vw, 6px) var(--accent);
+  text-shadow: 0 0 14px rgba(79, 208, 227, 0.3);
+}
+html.a11y-contrast .hero-title .accent { color: var(--accent); -webkit-text-stroke: 0; text-shadow: none; }
 
 /* Masked line-reveal */
 .mask { display: block; overflow: hidden; padding-block: 0.04em; }
@@ -461,6 +472,84 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
 .client-photo img { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
 .client:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38); }
 @media (prefers-reduced-motion: reduce) { .client, .client:hover { transition: none; transform: none; } }
+
+/* ---------- Gallery (bento grid + lightbox) ---------- */
+.gallery {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(0.6rem, 1.4vw, 1rem);
+}
+.g-item { border-radius: var(--radius); overflow: hidden; background: var(--bg-elev); }
+.g-1, .g-4 { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
+.g-2, .g-3 { aspect-ratio: 3 / 4; }
+/* desktop: wide + tall on the first row, mirrored as tall + wide on the second */
+@media (min-width: 760px) {
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: clamp(260px, 30vw, 440px);
+  }
+  .g-item { aspect-ratio: auto; }
+  .g-1 { grid-column: span 2; }
+  .g-2 { grid-column: span 1; }
+  .g-3 { grid-column: span 1; }
+  .g-4 { grid-column: span 2; }
+}
+.g-open { display: block; width: 100%; height: 100%; padding: 0; cursor: zoom-in; }
+.g-open img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease), filter 0.8s var(--ease);
+}
+.g-1 img { object-position: center 8%; }
+.g-2 img { object-position: center 15%; }
+.g-3 img { object-position: center 20%; }
+.g-open:hover img { transform: scale(1.04); }
+.g-open:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+
+.lightbox {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: clamp(1rem, 4vw, 3rem);
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+.lightbox[open] { display: grid; place-items: center; }
+.lightbox::backdrop { background: rgba(4, 12, 20, 0.92); backdrop-filter: blur(6px); }
+.lightbox-img {
+  max-width: 100%;
+  max-height: calc(100dvh - 6rem);
+  width: auto;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+}
+.lightbox-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(220, 238, 245, 0.42);
+  background: rgba(7, 18, 28, 0.7);
+  color: #e8f3f7;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.lightbox-btn:hover { background: #4fd0e3; color: #07121c; border-color: #4fd0e3; }
+.lightbox-btn:focus-visible { outline: 2px solid #4fd0e3; outline-offset: 3px; }
+.lightbox-close { top: 1rem; inset-inline-end: 1rem; font-size: 1.1rem; }
+.lightbox-prev { top: 50%; inset-inline-start: 1rem; translate: 0 -50%; }
+.lightbox-next { top: 50%; inset-inline-end: 1rem; translate: 0 -50%; }
+@media (prefers-reduced-motion: reduce) {
+  .g-open img, .g-open:hover img { transition: none; transform: none; }
+}
 
 /* ---------- Services ---------- */
 .services-grid {
@@ -649,18 +738,59 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   isolation: isolate;
   overflow: hidden;
   border-radius: var(--radius);
-  border: 1px solid rgba(79, 208, 227, 0.18);
-  min-height: clamp(360px, 42vw, 480px);
+  border: 1px solid rgba(79, 208, 227, 0.22);
   display: grid;
-  place-items: center;
-  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
+  grid-template-columns: 1fr;
+  align-items: center;
   /* the banner keeps its own dark palette in both themes, like the original cover */
   background:
-    radial-gradient(60% 80% at 82% 55%, rgba(40, 110, 130, 0.35), transparent 70%),
-    radial-gradient(50% 70% at 8% 45%, rgba(30, 80, 120, 0.45), transparent 70%),
-    linear-gradient(180deg, #071827, #04101b);
+    radial-gradient(45% 75% at 22% 50%, rgba(79, 208, 227, 0.22), transparent 70%),
+    radial-gradient(60% 90% at 85% 50%, rgba(30, 80, 120, 0.35), transparent 70%),
+    linear-gradient(180deg, #060e17, #03080e);
   color: #e8f3f7;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+@media (min-width: 760px) {
+  .pod-banner { grid-template-columns: 1fr 1.15fr; min-height: clamp(380px, 40vw, 500px); }
+}
+/* portrait shot on black: faded into the banner so it reads as part of the cover, not a framed photo */
+.pod-photo {
+  order: -1; /* phones: photo above the text, fading down into it */
+  width: 100%;
+  height: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  object-position: center 18%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+          mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+@media (min-width: 760px) {
+  .pod-photo {
+    order: 0;
+    max-height: none;
+    align-self: stretch;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 22%, #000 58%, transparent 92%);
+            mask-image: linear-gradient(to right, transparent, #000 22%, #000 58%, transparent 92%);
+  }
+}
+.pod-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 56px;
+}
+.pod-wave span {
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(#8ae6f2, #4fd0e3);
+  box-shadow: 0 0 8px rgba(79, 208, 227, 0.5);
+  transform-origin: center;
+  animation: pod-eq 1.3s ease-in-out infinite;
+}
+@keyframes pod-eq {
+  0%, 100% { transform: scaleY(0.3); opacity: 0.5; }
+  50%      { transform: scaleY(1); opacity: 1; }
 }
 
 /* particle field: three dot lattices of different size/pitch, densest on the left edge */
@@ -670,11 +800,11 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   z-index: -1;
   /* coprime tile sizes so the lattices never line up into a visible grid */
   background:
-    radial-gradient(circle, rgba(150, 225, 240, 0.8) 0 0.9px, transparent 1.5px) 3px 7px / 29px 31px,
-    radial-gradient(circle, rgba(150, 225, 240, 0.6) 0 1px, transparent 1.6px) 17px 2px / 37px 43px,
-    radial-gradient(circle, rgba(79, 208, 227, 0.6) 0 1.5px, transparent 2.2px) 9px 21px / 53px 47px,
-    radial-gradient(circle, rgba(79, 208, 227, 0.45) 0 1.8px, transparent 2.6px) 40px 11px / 71px 61px,
-    radial-gradient(circle, rgba(110, 160, 210, 0.4) 0 2.6px, transparent 3.4px) 21px 37px / 97px 83px;
+    radial-gradient(circle, var(--dot-a, rgba(150, 225, 240, 0.8)) 0 0.9px, transparent 1.5px) 3px 7px / 29px 31px,
+    radial-gradient(circle, var(--dot-b, rgba(150, 225, 240, 0.6)) 0 1px, transparent 1.6px) 17px 2px / 37px 43px,
+    radial-gradient(circle, var(--dot-c, rgba(79, 208, 227, 0.6)) 0 1.5px, transparent 2.2px) 9px 21px / 53px 47px,
+    radial-gradient(circle, var(--dot-d, rgba(79, 208, 227, 0.45)) 0 1.8px, transparent 2.6px) 40px 11px / 71px 61px,
+    radial-gradient(circle, var(--dot-e, rgba(110, 160, 210, 0.4)) 0 2.6px, transparent 3.4px) 21px 37px / 97px 83px;
   -webkit-mask-image: radial-gradient(70% 90% at 6% 50%, #000 0%, rgba(0, 0, 0, 0.35) 45%, rgba(0, 0, 0, 0.12) 75%);
           mask-image: radial-gradient(70% 90% at 6% 50%, #000 0%, rgba(0, 0, 0, 0.35) 45%, rgba(0, 0, 0, 0.12) 75%);
   animation: pod-drift 40s linear infinite;
@@ -684,8 +814,8 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle, rgba(79, 170, 210, 0.55) 0 5px, transparent 7px) 13px 29px / 113px 101px,
-    radial-gradient(circle, rgba(60, 130, 190, 0.45) 0 8px, transparent 11px) 61px 7px / 167px 139px;
+    radial-gradient(circle, var(--bokeh-a, rgba(79, 170, 210, 0.55)) 0 5px, transparent 7px) 13px 29px / 113px 101px,
+    radial-gradient(circle, var(--bokeh-b, rgba(60, 130, 190, 0.45)) 0 8px, transparent 11px) 61px 7px / 167px 139px;
   filter: blur(3px);
 }
 @keyframes pod-drift {
@@ -710,7 +840,7 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   border-radius: 50%;
   background: repeating-radial-gradient(circle,
     transparent 0 2.4%,
-    rgba(130, 215, 230, 0.9) 2.6% 3.1%,
+    var(--ring, rgba(130, 215, 230, 0.9)) 2.6% 3.1%,
     transparent 3.3% 5%);
   -webkit-mask-image:
     radial-gradient(circle, #000 0 1.3px, transparent 1.9px),
@@ -729,6 +859,7 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
 
 .pod-content {
   position: relative;
+  padding: clamp(1.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3rem) clamp(2.5rem, 5vw, 4rem);
   text-align: center;
   display: grid;
   justify-items: center;
@@ -749,8 +880,9 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
 }
 .pod-solid { color: #ffffff; }
 .pod-outline {
-  color: transparent;
-  -webkit-text-stroke: clamp(1.2px, 0.25vw, 2.2px) #4fd0e3;
+  color: #061523;
+  paint-order: stroke fill;
+  -webkit-text-stroke: clamp(2.4px, 0.5vw, 4.4px) #4fd0e3;
   text-shadow: 0 0 24px rgba(79, 208, 227, 0.35);
 }
 .pod-mic { width: 0.55em; height: 0.55em; color: #4fd0e3; }
@@ -775,7 +907,7 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
 .pod-link:focus-visible { outline: 2px solid #4fd0e3; outline-offset: 4px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .pod-particles, .pod-vortex span { animation: none; }
+  .pod-particles, .pod-vortex span, .pod-wave span { animation: none; }
   .pod-link, .pod-link:hover { transition: none; transform: none; }
 }
 html.a11y-contrast .pod-banner { background: #000 !important; }
@@ -1098,6 +1230,48 @@ html.lenis, html.lenis body { height: auto; }
     filter: blur(36px);
   }
 }
+
+/* ---------- Podcast-cover space background (whole page) ----------
+   Reuses the .pod-particles / .pod-vortex layers from the podcast banner,
+   fixed to the viewport and toned down so body text stays readable. */
+.page-space {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.55;
+}
+.page-space .pod-particles {
+  -webkit-mask-image: radial-gradient(80% 70% at 100% 0%, #000, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.08) 85%);
+          mask-image: radial-gradient(80% 70% at 100% 0%, #000, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.08) 85%);
+}
+/* vortex sits on the side opposite the RTL text column and drifts with scroll (--scroll set in main.js) */
+.page-space .pod-vortex {
+  top: calc(55% - var(--scroll, 0) * 30%);
+  left: 14%;
+  width: max(110vmax, 900px);
+}
+:root[dir="ltr"] .page-space .pod-vortex { left: 86%; }
+.page-space .pod-vortex span { opacity: 0.6; }
+@media (max-width: 640px) {
+  .page-space { opacity: 0.4; }
+  .page-space .pod-vortex { left: 50%; top: calc(70% - var(--scroll, 0) * 30%); }
+}
+:root[data-theme="light"] .page-space {
+  /* own teal palette for the light page (the podcast banner itself stays dark) */
+  --dot-a: rgba(10, 104, 120, 0.55);
+  --dot-b: rgba(10, 104, 120, 0.4);
+  --dot-c: rgba(22, 150, 170, 0.5);
+  --dot-d: rgba(22, 150, 170, 0.35);
+  --dot-e: rgba(40, 110, 160, 0.25);
+  --bokeh-a: rgba(79, 208, 227, 0.28);
+  --bokeh-b: rgba(79, 190, 227, 0.2);
+  --ring: rgba(14, 130, 150, 0.75);
+  opacity: 0.6;
+}
+:root[data-theme="light"] .page-space .pod-vortex span { opacity: 0.55; }
+html.a11y-contrast .page-space { display: none !important; }
 
 /* ---------- Liquid glass background (whole page) ---------- */
 body::after {
@@ -1428,15 +1602,15 @@ html.a11y-big-cursor, html.a11y-big-cursor * {
 /* Halo: same gold glow as dark mode, tuned so it reads as a glow, not a stain */
 :root[data-theme="light"] .page-halo {
   background: radial-gradient(circle,
-    rgba(79, 208, 227, 0.55),
-    rgba(79, 208, 227, 0.22) 34%,
+    rgba(79, 208, 227, 0.4),
+    rgba(79, 208, 227, 0.15) 34%,
     transparent 62%);
 }
 @media (max-width: 640px) {
   :root[data-theme="light"] .page-halo {
     background: radial-gradient(circle,
-      rgba(79, 208, 227, 0.65),
-      rgba(79, 208, 227, 0.28) 34%,
+      rgba(79, 208, 227, 0.48),
+      rgba(79, 208, 227, 0.2) 34%,
       transparent 64%);
   }
 }

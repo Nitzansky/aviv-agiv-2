@@ -84,6 +84,7 @@
   <a href="#main" class="skip-link">דלג לתוכן הראשי</a>
   <div class="scroll-progress" aria-hidden="true"></div>
   <div class="page-halo" aria-hidden="true"></div>
+  <div class="page-space" aria-hidden="true"><div class="pod-particles"></div><div class="pod-vortex"><span></span></div></div>
 
   <!-- Header -->
   <header class="site-header">
@@ -92,6 +93,7 @@
 
       <ul class="nav-links" id="primary-menu">
         <li><a href="#about">אודות</a></li>
+        <li><a href="#gallery">גלריה</a></li>
         <li><a href="#services">השירותים שלי</a></li>
         <li><a href="#clients">לקוחות</a></li>
         <li><a href="#podcast">הפודקאסט</a></li>
@@ -171,6 +173,46 @@
         </div>
       </div>
     </section>
+
+    <!-- Gallery -->
+    <section class="section" id="gallery" aria-labelledby="gallery-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow" id="gallery-title">גלריה</span>
+        </div>
+        <ul class="gallery reveal" data-delay="1">
+          <li class="g-item g-1">
+            <button type="button" class="g-open" data-gallery-index="0" aria-label="הגדלת התמונה: אביב עגיב בחולצה לבנה, על רקע תאורה חמה">
+              <img src="assets/gallery/aviv-lights.webp" alt="אביב עגיב בחולצה לבנה, על רקע תאורה חמה" width="1600" height="1068" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li class="g-item g-2">
+            <button type="button" class="g-open" data-gallery-index="1" aria-label="הגדלת התמונה: אביב עגיב, צילום גוף מלא">
+              <img src="assets/gallery/aviv-full.webp" alt="אביב עגיב, צילום גוף מלא" width="1067" height="1600" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li class="g-item g-3">
+            <button type="button" class="g-open" data-gallery-index="2" aria-label="הגדלת התמונה: אביב עגיב בחולצה שחורה, מחייך על רקע שחור">
+              <img src="assets/gallery/aviv-black.webp" alt="אביב עגיב בחולצה שחורה, מחייך על רקע שחור" width="960" height="958" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li class="g-item g-4">
+            <button type="button" class="g-open" data-gallery-index="3" aria-label="הגדלת התמונה: אביב עגיב על רקע קיר מרופד בפסים">
+              <img src="assets/gallery/aviv-stripes.webp" alt="אביב עגיב על רקע קיר מרופד בפסים" width="1600" height="1068" loading="lazy" decoding="async" />
+            </button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <dialog class="lightbox" aria-label="תצוגת תמונה">
+      <img class="lightbox-img" src="" alt="" />
+      <button type="button" class="lightbox-btn lightbox-close" data-lightbox-close aria-label="סגירה">✕</button>
+      <button type="button" class="lightbox-btn lightbox-prev" data-lightbox-prev aria-label="התמונה הקודמת">›</button>
+      <button type="button" class="lightbox-btn lightbox-next" data-lightbox-next aria-label="התמונה הבאה">‹</button>
+    </dialog>
+
+    <div class="glow-line" style="--glow-dur: 3.0s" aria-hidden="true"></div>
 
     <div class="glow-line" style="--glow-dur: 3.4s" aria-hidden="true"></div>
 
@@ -280,8 +322,6 @@
     <section class="section" id="podcast">
       <div class="container">
         <div class="pod-banner reveal">
-          <div class="pod-particles" aria-hidden="true"></div>
-          <div class="pod-vortex" aria-hidden="true"><span></span></div>
           <div class="pod-content">
             <span class="eyebrow">הפודקאסט</span>
             <h2 class="pod-heading">
@@ -289,6 +329,7 @@
               <span class="pod-solid">אביב</span>
               <span class="pod-outline">מתעורר</span>
             </h2>
+            <div class="waveform pod-wave" aria-hidden="true"></div>
             <p class="pod-sub">אביב עגיב משוחח עם האנשים<br />המשפיעים בישראל.</p>
             <div class="pod-links">
               <a href="https://open.spotify.com/show/5FpuJjyAxnAxtxVJx5vIRA" target="_blank" rel="noopener" class="pod-link pod-spotify" aria-label="האזנה ב-Spotify (נפתח בחלון חדש)">
@@ -296,6 +337,7 @@
               </a>
             </div>
           </div>
+          <img class="pod-photo" src="assets/gallery/aviv-black.webp" alt="" width="960" height="958" loading="lazy" decoding="async" />
         </div>
       </div>
     </section>
