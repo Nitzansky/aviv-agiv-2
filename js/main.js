@@ -281,7 +281,7 @@
     if (!toggle) return;
     const KEY = "avivagiv-theme";
     const meta = document.querySelector('meta[name="theme-color"]');
-    const COLORS = { dark: "#0b0b0d", light: "#f7f4ec" };
+    const COLORS = { dark: "#07121c", light: "#f0f6f9" };
     const isHe = root.lang === "he";
     const LABEL = {
       dark: isHe ? "מעבר לתצוגה בהירה" : "Switch to light view",
