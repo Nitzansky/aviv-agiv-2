@@ -5,20 +5,26 @@
 
 /* ---------- Design Tokens ---------- */
 :root {
-  /* Palette */
-  --bg:        #07121c;
-  --bg-elev:   #0c1b28;
-  --bg-elev-2: #122636;
-  --line:      rgba(220, 238, 245, 0.10);
-  --line-soft: rgba(220, 238, 245, 0.06);
-  --line-ui:   rgba(220, 238, 245, 0.42);  /* interactive control borders — ~3:1 (WCAG 1.4.11) */
-  --text:      #e8f3f7;
-  --text-dim:  #a3bcc6;   /* ~9:1 on --bg */
-  --text-mute: #84a0ac;   /* ~6.6:1 on --bg (WCAG AA for text) */
+  /* Palette — dark theme: true black and neutral greys, with the podcast cyan as the only colour.
+     (The navy palette is the light theme, below.) */
+  --bg:        #000000;
+  --bg-elev:   #0e0e0e;
+  --bg-elev-2: #181818;
+  --line:      rgba(255, 255, 255, 0.10);
+  --line-soft: rgba(255, 255, 255, 0.06);
+  --line-ui:   rgba(255, 255, 255, 0.40);  /* interactive control borders — ~3:1 (WCAG 1.4.11) */
+  --text:      #f2f2f2;
+  --text-dim:  #a8a8a8;   /* ~8.9:1 on --bg */
+  --text-mute: #8c8c8c;   /* ~6.3:1 on --bg (WCAG AA for text) */
   --accent:    #4fd0e3;      /* podcast cyan */
   --accent-2:  #8ae6f2;
   --accent-dim: rgba(79, 208, 227, 0.14);
   --accent-fill: var(--accent);  /* background of filled controls (always paired with dark #07121c text) */
+  --glass:      rgba(0, 0, 0, 0.72);  /* scrolled header */
+  --glass-menu: rgba(0, 0, 0, 0.6);   /* mobile menu overlay */
+  --pool:       0, 0, 0;              /* rgb of the backdrop behind the hero portrait */
+  --halo-strength: 0.12;              /* cyan glow: almost off on black */
+  --space-strength: 0.8;              /* ring/dot layers (white in this theme) */
 
   /* Type */
   --font-display: "Fraunces", "Frank Ruhl Libre", Georgia, serif;
@@ -186,7 +192,7 @@ ul { list-style: none; }
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: rgba(7, 18, 28, 0.72);
+  background: var(--glass);
   backdrop-filter: blur(14px) saturate(150%);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
   opacity: 0;
@@ -394,9 +400,8 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   }
   .hero-photo img { width: 100%; height: auto; }
   .hero-photo::after { display: none; } /* clipped by the crop; the pool moves to the grid below */
-  .hero-grid { background: radial-gradient(60% 40% at 22% 34%, rgba(2, 7, 12, 0.85), transparent 75%); }
-  :root[dir="ltr"] .hero-grid { background-position: 0 0; background-image: radial-gradient(60% 40% at 78% 34%, rgba(2, 7, 12, 0.85), transparent 75%); }
-  :root[data-theme="light"] .hero-grid { background: none; }
+  .hero-grid { background: radial-gradient(60% 40% at 22% 34%, rgba(var(--pool), 0.85), transparent 75%); }
+  :root[dir="ltr"] .hero-grid { background-position: 0 0; background-image: radial-gradient(60% 40% at 78% 34%, rgba(var(--pool), 0.85), transparent 75%); }
   .hero-aside { grid-row: 2; max-width: none; }
   /* the ghost button sits over the shirt: give it a solid page-coloured fill so it stays legible */
   .hero-cta .btn-ghost { background: var(--bg); }
@@ -415,14 +420,8 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   transform-origin: 50% 45%;
   z-index: -2;
   /* darker than the page itself, so the centre behind him reads as a deep, quiet backdrop */
-  background: radial-gradient(closest-side at 50% 45%, #02070c 35%, rgba(2, 7, 12, 0.75) 62%, transparent);
+  background: radial-gradient(closest-side at 50% 45%, rgb(var(--pool)) 35%, rgba(var(--pool), 0.75) 62%, transparent);
 }
-/* light theme: a dark pool would read as a stain, so it just clears the rings to the page colour */
-:root[data-theme="light"] .hero-photo::after {
-  background: radial-gradient(closest-side, var(--bg) 40%, transparent);
-  opacity: 0.9;
-}
-:root[data-theme="light"] .hero-photo img { filter: none; }
 .hero-title {
   font-family: var(--font-display);
   font-weight: 400;
@@ -1110,7 +1109,7 @@ html.a11y-contrast .pod-outline { -webkit-text-stroke-color: #ffe000; text-shado
     justify-content: center;
     gap: 2rem;
     /* frosted glass, like the desktop header: the page stays faintly visible behind the links */
-    background: rgba(7, 18, 28, 0.6);
+    background: var(--glass-menu);
     backdrop-filter: blur(18px) saturate(150%);
     -webkit-backdrop-filter: blur(18px) saturate(150%);
     opacity: 0;
@@ -1232,6 +1231,7 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ---------- Traveling ambient halo (whole page, scroll-driven) ---------- */
 .page-halo {
+  opacity: var(--halo-strength, 1);
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1272,7 +1272,7 @@ html.lenis, html.lenis body { height: auto; }
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.4;
+  opacity: calc(0.4 * var(--space-strength, 1));
 }
 .page-space .pod-particles {
   -webkit-mask-image: radial-gradient(80% 70% at 100% 0%, #000, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.08) 85%);
@@ -1290,7 +1290,7 @@ html.lenis, html.lenis body { height: auto; }
 .page-space .pod-vortex span { --ring-gap: calc(13% - var(--scroll, 0) * 8%); }
 
 @media (max-width: 640px) {
-  .page-space { opacity: 0.3; }
+  .page-space { opacity: calc(0.3 * var(--space-strength, 1)); }
   /* same composition as desktop: dots top-right, rings off the left edge, away from the text */
   .page-space .pod-vortex { left: 0%; top: calc(62% - var(--scroll, 0) * 30%); width: 150vmax; }
   /* the tilt squashes the rings into close dotted lines on a narrow screen, so phones get a much
@@ -1301,24 +1301,21 @@ html.lenis, html.lenis body { height: auto; }
             mask-image: radial-gradient(90% 45% at 100% 0%, #000, rgba(0, 0, 0, 0.2) 60%, transparent 90%);
   }
 }
-:root[data-theme="light"] .page-space {
-  /* own teal palette for the light page (the podcast banner itself stays dark) */
-  --dot-a: rgba(10, 104, 120, 0.55);
-  --dot-b: rgba(10, 104, 120, 0.4);
-  --dot-c: rgba(22, 150, 170, 0.5);
-  --dot-d: rgba(22, 150, 170, 0.35);
-  --dot-e: rgba(40, 110, 160, 0.25);
-  --bokeh-a: rgba(79, 208, 227, 0.28);
-  --bokeh-b: rgba(79, 190, 227, 0.2);
-  --ring: rgba(14, 130, 150, 0.75);
-  opacity: 0.45;
-}
-:root[data-theme="light"] .page-space .pod-vortex span { opacity: 0.45; }
 /* static spacing when motion is off (after the phone rule so it wins there too) */
 @media (prefers-reduced-motion: reduce) {
   .page-space .pod-vortex span { --ring-gap: 8%; }
 }
 html.a11y-stop-motion .page-space .pod-vortex span { --ring-gap: 8%; }
+:root:not([data-theme="light"]) .page-space {
+  --dot-a: rgba(255, 255, 255, 0.7);
+  --dot-b: rgba(255, 255, 255, 0.5);
+  --dot-c: rgba(255, 255, 255, 0.45);
+  --dot-d: rgba(255, 255, 255, 0.3);
+  --dot-e: rgba(255, 255, 255, 0.2);
+  --bokeh-a: rgba(255, 255, 255, 0.18);
+  --bokeh-b: rgba(255, 255, 255, 0.12);
+  --ring: rgba(255, 255, 255, 0.7);
+}
 html.a11y-contrast .page-space { display: none !important; }
 
 /* ---------- Liquid glass background (whole page) ---------- */
@@ -1609,59 +1606,21 @@ html.a11y-big-cursor, html.a11y-big-cursor * {
 
 /* ==========================================================================
    Light theme (opt-in via the header toggle — data-theme="light" on <html>)
+   The client's "light" view is the original navy palette; the default dark view is near-black.
    ========================================================================== */
 :root[data-theme="light"] {
-  --bg:        #f0f6f9;
-  --bg-elev:   #e3eef3;
-  --bg-elev-2: #d4e4eb;
-  --line:      rgba(8, 26, 38, 0.10);
-  --line-soft: rgba(8, 26, 38, 0.06);
-  --line-ui:   rgba(8, 26, 38, 0.38);
-  --text:      #0d1c26;
-  --text-dim:  #36505d;
-  --text-mute: #4c6773;
-  --accent:    #0a6878;   /* text/border role — darkened for AA contrast against a light bg */
-  --accent-2:  #8ae6f2;   /* hover state of filled controls */
-  --accent-dim: rgba(10, 104, 120, 0.14);
-  --accent-fill: #4fd0e3; /* resting fill of buttons/toggles — stays bright so dark text keeps ~8:1 contrast */
-}
-
-/* Vignette: the dark bottom smudge that grounds the hero on a dark page
-   reads as dirt on a light one — soften and warm it instead. */
-:root[data-theme="light"] body::before {
-  background:
-    radial-gradient(120% 80% at 50% -10%, rgba(10, 104, 120, 0.07), transparent 60%),
-    radial-gradient(100% 100% at 50% 120%, rgba(8, 26, 38, 0.05), transparent 55%);
-}
-
-:root[data-theme="light"] .site-header::before { background: rgba(240, 246, 249, 0.78); }
-@media (max-width: 860px) {
-  :root[data-theme="light"] .nav-links { background: rgba(240, 246, 249, 0.62); }
-}
-
-/* "Glass" surfaces were tinted white to lift off a dark bg — tint dark instead */
-:root[data-theme="light"] .service { background: rgba(8, 26, 38, 0.03); box-shadow: inset 0 1px 0 rgba(8, 26, 38, 0.05); }
-:root[data-theme="light"] .service:hover { background: rgba(8, 26, 38, 0.05); }
-:root[data-theme="light"] .podcast-card { box-shadow: inset 0 1px 0 rgba(8, 26, 38, 0.06); }
-:root[data-theme="light"] .stats { background: rgba(8, 26, 38, 0.02); }
-:root[data-theme="light"] .field input,
-:root[data-theme="light"] .field textarea { background: rgba(8, 26, 38, 0.035); }
-:root[data-theme="light"] .field input:focus,
-:root[data-theme="light"] .field textarea:focus { background: rgba(8, 26, 38, 0.06); }
-:root[data-theme="light"] .btn-ghost { background: rgba(8, 26, 38, 0.025); }
-
-/* Halo: same gold glow as dark mode, tuned so it reads as a glow, not a stain */
-:root[data-theme="light"] .page-halo {
-  background: radial-gradient(circle,
-    rgba(79, 208, 227, 0.3),
-    rgba(79, 208, 227, 0.11) 34%,
-    transparent 62%);
-}
-@media (max-width: 640px) {
-  :root[data-theme="light"] .page-halo {
-    background: radial-gradient(circle,
-      rgba(79, 208, 227, 0.48),
-      rgba(79, 208, 227, 0.2) 34%,
-      transparent 64%);
-  }
+  --bg:        #07121c;
+  --bg-elev:   #0c1b28;
+  --bg-elev-2: #122636;
+  --line:      rgba(220, 238, 245, 0.10);
+  --line-soft: rgba(220, 238, 245, 0.06);
+  --line-ui:   rgba(220, 238, 245, 0.42);
+  --text:      #e8f3f7;
+  --text-dim:  #a3bcc6;
+  --text-mute: #84a0ac;
+  --glass:      rgba(7, 18, 28, 0.72);
+  --glass-menu: rgba(7, 18, 28, 0.6);
+  --pool:       2, 7, 12;
+  --halo-strength: 1;
+  --space-strength: 1;
 }
