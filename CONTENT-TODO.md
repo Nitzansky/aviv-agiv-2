@@ -34,5 +34,9 @@ Everything not listed here is the client's text verbatim.
 - Podcast subtitle: אביב עגיב משוחח עם האנשים המשפיעים בישראל. (requested directly)
 - Client logos in `assets/clients/` (from the client's WhatsApp files)
 
-## Other open items
-- `en.html` still has the previous site's English text, old podcast card and no clients section.
+## English page
+`en.html` mirrors `index.html` section for section (translated 2026-10-25). Any Hebrew copy change
+needs the matching English change. Translation choices to confirm with the client:
+- Podcast name rendered as "Aviv Awakens" (kept from the previous English site)
+- "יש מאין" → "from nothing"; "יחסי ציבור יוזמים" → "Proactive PR"
+- Client names transliterated: Keren Hesseg (קרן הישג), Mevalim (מבלים), Darlain (דרלן)

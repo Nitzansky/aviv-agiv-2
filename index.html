@@ -93,7 +93,6 @@
 
       <ul class="nav-links" id="primary-menu">
         <li><a href="#about">אודות</a></li>
-        <li><a href="#gallery">גלריה</a></li>
         <li><a href="#services">השירותים שלי</a></li>
         <li><a href="#clients">לקוחות</a></li>
         <li><a href="#podcast">הפודקאסט</a></li>
@@ -118,21 +117,26 @@
     <!-- Hero -->
     <section class="hero" id="hero">
       <div class="container hero-grid">
-        <div class="hero-main">
-          <span class="eyebrow reveal">ייעוץ תקשורתי · יחסי ציבור</span>
-          <h1 class="hero-title">
-            <span class="mask"><span>אביב</span></span>
-            <span class="mask"><span class="accent">עגיב</span></span>
-          </h1>
-          <div class="hero-cta reveal" data-delay="2">
-            <a href="#contact" class="btn btn-primary">בואו נדבר <span class="btn-arrow" aria-hidden="true">→</span></a>
-            <a href="#services" class="btn btn-ghost">השירותים שלי</a>
+        <div class="hero-text">
+          <div class="hero-main">
+            <span class="eyebrow reveal">ייעוץ תקשורתי · יחסי ציבור</span>
+            <h1 class="hero-title">
+              <span class="mask"><span>אביב</span></span>
+              <span class="mask"><span class="accent">עגיב</span></span>
+            </h1>
+            <div class="hero-cta reveal" data-delay="2">
+              <a href="#contact" class="btn btn-primary">בואו נדבר <span class="btn-arrow" aria-hidden="true">→</span></a>
+              <a href="#services" class="btn btn-ghost">השירותים שלי</a>
+            </div>
+          </div>
+          <div class="hero-aside reveal" data-delay="3">
+            <p class="hero-sub">נעים להכיר, אני אביב עגיב.</p>
+            <p class="hero-desc">למעלה מעשור שאני עוסק בייעוץ תקשורתי ויחסי ציבור, מלווה חברות, מותגים ואישים, מסייע להם להגיע לקדמת הבמה התקשורתית, לבנות מוניטין ולקדם מטרות עסקיות ואסטרטגיות.</p>
           </div>
         </div>
-        <div class="hero-aside reveal" data-delay="3">
-          <p class="hero-sub">נעים להכיר, אני אביב עגיב.</p>
-          <p class="hero-desc">למעלה מעשור שאני עוסק בייעוץ תקשורתי ויחסי ציבור, מלווה חברות, מותגים ואישים, מסייע להם להגיע לקדמת הבמה התקשורתית, לבנות מוניטין ולקדם מטרות עסקיות ואסטרטגיות.</p>
-        </div>
+        <figure class="hero-photo reveal" data-delay="1">
+          <img src="assets/hero/aviv-portrait.webp" alt="אביב עגיב, דיוקן" width="1020" height="1108" fetchpriority="high" decoding="async" />
+        </figure>
       </div>
     </section>
 
@@ -173,44 +177,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Gallery -->
-    <section class="section" id="gallery" aria-labelledby="gallery-title">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow" id="gallery-title">גלריה</span>
-        </div>
-        <ul class="gallery reveal" data-delay="1">
-          <li class="g-item g-1">
-            <button type="button" class="g-open" data-gallery-index="0" aria-label="הגדלת התמונה: אביב עגיב בחולצה לבנה, על רקע תאורה חמה">
-              <img src="assets/gallery/aviv-lights.webp" alt="אביב עגיב בחולצה לבנה, על רקע תאורה חמה" width="1600" height="1068" loading="lazy" decoding="async" />
-            </button>
-          </li>
-          <li class="g-item g-2">
-            <button type="button" class="g-open" data-gallery-index="1" aria-label="הגדלת התמונה: אביב עגיב, צילום גוף מלא">
-              <img src="assets/gallery/aviv-full.webp" alt="אביב עגיב, צילום גוף מלא" width="1067" height="1600" loading="lazy" decoding="async" />
-            </button>
-          </li>
-          <li class="g-item g-3">
-            <button type="button" class="g-open" data-gallery-index="2" aria-label="הגדלת התמונה: אביב עגיב בחולצה שחורה, מחייך על רקע שחור">
-              <img src="assets/gallery/aviv-black.webp" alt="אביב עגיב בחולצה שחורה, מחייך על רקע שחור" width="960" height="958" loading="lazy" decoding="async" />
-            </button>
-          </li>
-          <li class="g-item g-4">
-            <button type="button" class="g-open" data-gallery-index="3" aria-label="הגדלת התמונה: אביב עגיב על רקע קיר מרופד בפסים">
-              <img src="assets/gallery/aviv-stripes.webp" alt="אביב עגיב על רקע קיר מרופד בפסים" width="1600" height="1068" loading="lazy" decoding="async" />
-            </button>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <dialog class="lightbox" aria-label="תצוגת תמונה">
-      <img class="lightbox-img" src="" alt="" />
-      <button type="button" class="lightbox-btn lightbox-close" data-lightbox-close aria-label="סגירה">✕</button>
-      <button type="button" class="lightbox-btn lightbox-prev" data-lightbox-prev aria-label="התמונה הקודמת">›</button>
-      <button type="button" class="lightbox-btn lightbox-next" data-lightbox-next aria-label="התמונה הבאה">‹</button>
-    </dialog>
 
     <div class="glow-line" style="--glow-dur: 3.0s" aria-hidden="true"></div>
 
@@ -276,6 +242,7 @@
           <li class="client client-full client-cover" style="--tile: #f0e4d4"><img src="assets/clients/jgive.webp" alt="Jgive" width="560" height="373" loading="lazy" decoding="async" /></li>
           <li class="client"><img src="assets/clients/uibe-israel.webp" alt="UIBE Israel" width="447" height="447" loading="lazy" decoding="async" /></li>
           <li class="client"><img src="assets/clients/keren-hesseg.webp" alt="קרן הישג" width="560" height="224" loading="lazy" decoding="async" /></li>
+          <li class="client"><img src="assets/clients/mevalim.webp" alt="מבלים" width="322" height="129" loading="lazy" decoding="async" /></li>
           <li class="client client-dark"><img src="assets/clients/terranova.webp" alt="Terranova" width="289" height="94" loading="lazy" decoding="async" /></li>
           <li class="client client-full" style="--tile: #ffdc4e"><img src="assets/clients/dreemz.webp" alt="Dreemz" width="447" height="447" loading="lazy" decoding="async" /></li>
           <li class="client"><img src="assets/clients/market-api.webp" alt="Market API" width="200" height="200" loading="lazy" decoding="async" /></li>
