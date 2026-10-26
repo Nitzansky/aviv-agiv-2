@@ -366,12 +366,24 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
 @media (max-width: 899px) {
   .hero-grid { min-height: auto; padding-top: clamp(7rem, 16vh, 9rem); }
 }
-/* page-coloured pool behind the portrait: the rings and dots fade out around him */
+/* dark pool behind the portrait: the rings and dots fade out around him. It copies the img box
+   (same anchor, height and aspect ratio), so it stays centred on him even where the photo runs
+   past its column, then is scaled up around his head and shoulders. */
 .hero-photo::after {
   content: "";
   position: absolute;
-  inset: -20% -45% -10%;
+  bottom: 0;
+  inset-inline-start: 0;
+  height: 100%;
+  aspect-ratio: 1020 / 1112;
+  transform: scale(1.5);
+  transform-origin: 50% 45%;
   z-index: -2;
+  /* darker than the page itself, so the centre behind him reads as a deep, quiet backdrop */
+  background: radial-gradient(closest-side at 50% 45%, #02070c 35%, rgba(2, 7, 12, 0.75) 62%, transparent);
+}
+/* light theme: a dark pool would read as a stain, so it just clears the rings to the page colour */
+:root[data-theme="light"] .hero-photo::after {
   background: radial-gradient(closest-side, var(--bg) 40%, transparent);
   opacity: 0.9;
 }
@@ -430,6 +442,9 @@ html.a11y-contrast .hero-title .accent { color: var(--accent); -webkit-text-stro
     width: auto;
     max-width: none;
   }
+  /* the shot crops one arm at the photo's right edge; in RTL the photo sits on the left, so it is
+     mirrored to put that cut against the screen edge instead of beside the text */
+  :root[dir="rtl"] .hero-photo img { transform: scaleX(-1); }
 }
 
 .hero-cta { display: flex; flex-wrap: wrap; gap: 1rem; }
@@ -1238,7 +1253,7 @@ html.lenis, html.lenis body { height: auto; }
 :root[dir="ltr"] .page-space .pod-vortex { left: 86%; }
 .page-space .pod-vortex span { opacity: 0.45; }
 /* rings start wide apart at the top of the page and draw closer together while scrolling */
-.page-space .pod-vortex span { --ring-gap: calc(8.5% - var(--scroll, 0) * 3.5%); }
+.page-space .pod-vortex span { --ring-gap: calc(13% - var(--scroll, 0) * 8%); }
 @media (prefers-reduced-motion: reduce) {
   .page-space .pod-vortex span { --ring-gap: 6%; }
 }
@@ -1265,12 +1280,6 @@ html.a11y-stop-motion .page-space .pod-vortex span { --ring-gap: 6%; }
   opacity: 0.45;
 }
 :root[data-theme="light"] .page-space .pod-vortex span { opacity: 0.45; }
-/* rings start wide apart at the top of the page and draw closer together while scrolling */
-.page-space .pod-vortex span { --ring-gap: calc(8.5% - var(--scroll, 0) * 3.5%); }
-@media (prefers-reduced-motion: reduce) {
-  .page-space .pod-vortex span { --ring-gap: 6%; }
-}
-html.a11y-stop-motion .page-space .pod-vortex span { --ring-gap: 6%; }
 html.a11y-contrast .page-space { display: none !important; }
 
 /* ---------- Liquid glass background (whole page) ---------- */

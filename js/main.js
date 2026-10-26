@@ -23,6 +23,21 @@
 
   /* ---- In-page anchor navigation ---- */
   const HEADER_OFFSET = 90;
+  /* Center the section's content (its box minus the generous section padding) in the space
+     below the fixed header; a section taller than that lands with its heading under the header. */
+  const anchorY = (target) => {
+    const cs = getComputedStyle(target);
+    const padTop = parseFloat(cs.paddingTop) || 0;
+    const padBottom = parseFloat(cs.paddingBottom) || 0;
+    const contentTop = target.getBoundingClientRect().top + window.scrollY + padTop;
+    const contentH = target.offsetHeight - padTop - padBottom;
+    const avail = window.innerHeight - HEADER_OFFSET;
+    const y = contentH <= avail
+      ? contentTop - HEADER_OFFSET - (avail - contentH) / 2
+      : contentTop - HEADER_OFFSET - 24;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    return Math.min(Math.max(y, 0), max);
+  };
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (e) => {
       const id = link.getAttribute("href");
@@ -30,8 +45,9 @@
       const target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      if (lenis) lenis.scrollTo(target, { offset: -HEADER_OFFSET });
-      else target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+      const y = anchorY(target);
+      if (lenis) lenis.scrollTo(y);
+      else window.scrollTo({ top: y, behavior: reduceMotion ? "auto" : "smooth" });
       history.replaceState(null, "", id);
     });
   });
