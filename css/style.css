@@ -897,9 +897,9 @@ html.a11y-contrast .client img, html.a11y-contrast .client-word span { opacity: 
   border-radius: 50%;
   /* --ring-gap is the distance between rings; the page background animates it on scroll */
   background: repeating-radial-gradient(circle,
-    transparent 0 calc(var(--ring-gap, 5%) * 0.48),
-    var(--ring, rgba(130, 215, 230, 0.9)) calc(var(--ring-gap, 5%) * 0.52) calc(var(--ring-gap, 5%) * 0.62),
-    transparent calc(var(--ring-gap, 5%) * 0.66) var(--ring-gap, 5%));
+    transparent 0 calc(var(--ring-gap, 5%) * 0.38),
+    var(--ring, rgba(130, 215, 230, 0.9)) calc(var(--ring-gap, 5%) * 0.44) calc(var(--ring-gap, 5%) * 0.66),
+    transparent calc(var(--ring-gap, 5%) * 0.72) var(--ring-gap, 5%));
   -webkit-mask-image:
     radial-gradient(circle, #000 0 1.3px, transparent 1.9px),
     radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.7) 30%, transparent 62%);
@@ -1303,15 +1303,21 @@ html.lenis, html.lenis body { height: auto; }
   pointer-events: none;
   overflow: hidden;
   opacity: calc(0.4 * var(--space-strength, 1));
+  /* soft fade on all four screen edges so the rings never end on a hard line */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
+                      linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
+                      linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
 }
 .page-space .pod-particles {
   -webkit-mask-image: radial-gradient(80% 70% at 100% 0%, #000, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.08) 85%);
           mask-image: radial-gradient(80% 70% at 100% 0%, #000, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.08) 85%);
 }
-/* vortex sits on the side opposite the RTL text column and drifts up with scroll. --scroll and
-   --ring-step are set on .page-space by main.js. The drift uses `translate` (composited, no layout);
-   the ring spacing changes the gradient, which repaints, so it follows --ring-step: scroll progress
-   rounded to 1/40, i.e. at most 40 repaints over the whole page instead of one per frame. */
+/* vortex sits on the side opposite the RTL text column and drifts up with scroll. --scroll is set
+   on .page-space by main.js every frame. Both the drift (`translate`) and the ring spacing (`scale`
+   on the rings) are transforms, so scrolling only recomposites and never repaints the gradient. */
 .page-space .pod-vortex {
   top: 55%;
   translate: -50% calc(-50% - var(--scroll, 0) * 30vh);
@@ -1320,8 +1326,22 @@ html.lenis, html.lenis body { height: auto; }
 }
 :root[dir="ltr"] .page-space .pod-vortex { left: 86%; }
 .page-space .pod-vortex span { opacity: 0.45; }
-/* rings start wide apart at the top of the page and draw closer together while scrolling */
-.page-space .pod-vortex span { --ring-gap: calc(13% - var(--ring-step, 0) * 8%); }
+/* rings start wide apart at the top of the page and draw closer together while scrolling:
+   the gradient is drawn at the final spacing and scaled up from 2.6x down to 1x */
+.page-space .pod-vortex span { --ring-gap: 5%; scale: calc(2.6 - var(--scroll, 0) * 1.6); }
+/* the dot pattern lives on the unscaled parent, so the dots keep their size while the rings scale */
+.page-space .pod-vortex {
+  -webkit-mask-image: radial-gradient(circle, #000 0 1.3px, transparent 1.9px);
+          mask-image: radial-gradient(circle, #000 0 1.3px, transparent 1.9px);
+  -webkit-mask-size: 5px 5px;
+          mask-size: 5px 5px;
+}
+.page-space .pod-vortex span {
+  -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.7) 30%, transparent 62%);
+          mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.7) 30%, transparent 62%);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
 
 @media (max-width: 640px) {
   .page-space { opacity: calc(0.3 * var(--space-strength, 1)); }
@@ -1329,7 +1349,7 @@ html.lenis, html.lenis body { height: auto; }
   .page-space .pod-vortex { left: 0%; top: 62%; width: 150vmax; }
   /* the tilt squashes the rings into close dotted lines on a narrow screen, so phones get a much
      wider spacing (still tightening on scroll) */
-  .page-space .pod-vortex span { --ring-gap: calc(22% - var(--ring-step, 0) * 12%); }
+  .page-space .pod-vortex span { --ring-gap: 10%; scale: calc(2.2 - var(--scroll, 0) * 1.2); }
   .page-space .pod-particles {
     -webkit-mask-image: radial-gradient(90% 45% at 100% 0%, #000, rgba(0, 0, 0, 0.2) 60%, transparent 90%);
             mask-image: radial-gradient(90% 45% at 100% 0%, #000, rgba(0, 0, 0, 0.2) 60%, transparent 90%);
@@ -1337,9 +1357,9 @@ html.lenis, html.lenis body { height: auto; }
 }
 /* static spacing when motion is off (after the phone rule so it wins there too) */
 @media (prefers-reduced-motion: reduce) {
-  .page-space .pod-vortex span { --ring-gap: 8%; }
+  .page-space .pod-vortex span { --ring-gap: 8%; scale: 1; }
 }
-html.a11y-stop-motion .page-space .pod-vortex span { --ring-gap: 8%; }
+html.a11y-stop-motion .page-space .pod-vortex span { --ring-gap: 8%; scale: 1; }
 :root:not([data-theme="light"]) .page-space {
   --dot-a: rgba(255, 255, 255, 0.7);
   --dot-b: rgba(255, 255, 255, 0.5);

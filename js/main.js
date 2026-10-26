@@ -81,7 +81,6 @@
   /* scroll variables go on the background layer only: set on <html> they would make the browser
      recompute styles for the whole document on every scroll frame */
   const space = document.querySelector(".page-space");
-  let ringStep = -1;
 
   const onScroll = (scrollY) => {
     const y = typeof scrollY === "number" ? scrollY : window.scrollY;
@@ -93,8 +92,6 @@
     if (progress) progress.style.transform = "scaleX(" + p + ")";
     if (space) {
       space.style.setProperty("--scroll", p.toFixed(4));
-      const step = Math.round(p * 40) / 40; // ring spacing repaints, so it changes in 40 steps
-      if (step !== ringStep) { ringStep = step; space.style.setProperty("--ring-step", step); }
     }
 
     /* Halo drifts top -> bottom while swaying gently left/right, with a soft scale pulse */
