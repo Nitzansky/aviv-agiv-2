@@ -27,7 +27,7 @@
   --space-strength: 0.8;              /* ring/dot layers (white in this theme) */
 
   /* Type */
-  --font-display: "Fraunces", "Frank Ruhl Libre", Georgia, serif;
+  --font-display: "Assistant", system-ui, -apple-system, sans-serif;  /* one type family for every heading, in both languages */
   --font-body:    "Inter", "Assistant", system-ui, -apple-system, sans-serif;
 
   /* Rhythm */
@@ -41,9 +41,8 @@
   --dur: 0.7s;
 }
 
-/* Hebrew swaps the display face to a Hebrew serif */
+/* Hebrew body text uses Assistant first (Inter has no Hebrew) */
 :root[lang="he"] {
-  --font-display: "Frank Ruhl Libre", "Fraunces", Georgia, serif;
   --font-body:    "Assistant", "Inter", system-ui, sans-serif;
 }
 
@@ -558,25 +557,45 @@ html.a11y-contrast .hero-title .accent { color: var(--accent); -webkit-text-stro
 }
 /* 16 logos: 2 or 4 per row keeps every row full */
 @media (min-width: 760px)  { .clients-grid { grid-template-columns: repeat(4, 1fr); } }
+/* One-colour logos (white, background removed, in assets/clients/mono) on one shared tile.
+   Each tile sets --w/--h so every logo carries the same visual weight whatever its shape. */
 .client {
-  --tile: #ffffff;
   position: relative;
   overflow: hidden;
   aspect-ratio: 3 / 2;
-  background: var(--tile);
+  background: var(--bg-elev);
+  border: 1px solid var(--line-soft);
   border-radius: calc(var(--radius) * 0.75);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  transition: border-color 0.35s var(--ease), background 0.35s var(--ease);
 }
-/* white-on-transparent logos sit on a fixed navy tile so they stay visible in the light theme too */
-.client-dark { --tile: #0c1b28; box-shadow: inset 0 0 0 1px rgba(79, 208, 227, 0.22), 0 6px 18px rgba(0, 0, 0, 0.28); }
-.client img { position: absolute; inset: 14%; width: 72%; height: 72%; object-fit: contain; }
-/* logos supplied with their own padded colour background fill the tile; the photo is cropped to fill */
-.client-full img { inset: 0; width: 100%; height: 100%; }
-.client-cover img { object-fit: cover; }
-.client-photo img { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
-.client:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38); }
-@media (prefers-reduced-motion: reduce) { .client, .client:hover { transition: none; transform: none; } }
+.client img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--w, 60%);
+  height: var(--h, 40%);
+  translate: -50% -50%;
+  object-fit: contain;
+  opacity: 0.78;
+  transition: opacity 0.35s var(--ease);
+}
+.client:hover { border-color: var(--line); background: var(--bg-elev-2); }
+.client:hover img { opacity: 1; }
+/* a client without a usable logo gets a wordmark in the same white */
+.client-word { display: grid; place-items: center; }
+.client-word span {
+  font-family: "Assistant", var(--font-body);
+  font-weight: 800;
+  font-size: clamp(1.05rem, 0.8rem + 1vw, 1.5rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+  opacity: 0.78;
+  transition: opacity 0.35s var(--ease);
+}
+.client-word:hover span { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .client, .client img, .client-word span { transition: none; } }
+html.a11y-contrast .client img, html.a11y-contrast .client-word span { opacity: 1; }
 
 /* ---------- Services ---------- */
 .services-grid {
@@ -647,6 +666,18 @@ html.a11y-contrast .hero-title .accent { color: var(--accent); -webkit-text-stro
 }
 :root[lang="he"] .service h3 { font-weight: 500; }
 .service p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.55; }
+/* phones: a compact numbered list instead of seven tall, mostly empty cards */
+@media (max-width: 619px) {
+  .service {
+    min-height: 0;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.15rem 1.25rem;
+  }
+  .service .num { flex: none; width: 1.6rem; color: var(--accent); font-weight: 700; }
+  .service h3 { margin-top: 0; font-size: 1.12rem; line-height: 1.3; }
+}
 
 /* ---------- Statement / pull quote ---------- */
 .statement {
@@ -676,8 +707,7 @@ html.a11y-contrast .hero-title .accent { color: var(--accent); -webkit-text-stro
   quotes: none;
 }
 :root[lang="he"] .statement q { font-weight: 500; }
-.statement q .em { color: var(--accent); font-style: italic; }
-:root[lang="he"] .statement q .em { font-style: normal; }
+.statement q .em { color: var(--accent); }
 .statement cite {
   display: block;
   margin-top: 2rem;
@@ -1278,24 +1308,28 @@ html.lenis, html.lenis body { height: auto; }
   -webkit-mask-image: radial-gradient(80% 70% at 100% 0%, #000, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.08) 85%);
           mask-image: radial-gradient(80% 70% at 100% 0%, #000, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.08) 85%);
 }
-/* vortex sits on the side opposite the RTL text column and drifts with scroll (--scroll set in main.js) */
+/* vortex sits on the side opposite the RTL text column and drifts up with scroll. --scroll and
+   --ring-step are set on .page-space by main.js. The drift uses `translate` (composited, no layout);
+   the ring spacing changes the gradient, which repaints, so it follows --ring-step: scroll progress
+   rounded to 1/40, i.e. at most 40 repaints over the whole page instead of one per frame. */
 .page-space .pod-vortex {
-  top: calc(55% - var(--scroll, 0) * 30%);
+  top: 55%;
+  translate: -50% calc(-50% - var(--scroll, 0) * 30vh);
   left: 14%;
   width: max(110vmax, 900px);
 }
 :root[dir="ltr"] .page-space .pod-vortex { left: 86%; }
 .page-space .pod-vortex span { opacity: 0.45; }
 /* rings start wide apart at the top of the page and draw closer together while scrolling */
-.page-space .pod-vortex span { --ring-gap: calc(13% - var(--scroll, 0) * 8%); }
+.page-space .pod-vortex span { --ring-gap: calc(13% - var(--ring-step, 0) * 8%); }
 
 @media (max-width: 640px) {
   .page-space { opacity: calc(0.3 * var(--space-strength, 1)); }
   /* same composition as desktop: dots top-right, rings off the left edge, away from the text */
-  .page-space .pod-vortex { left: 0%; top: calc(62% - var(--scroll, 0) * 30%); width: 150vmax; }
+  .page-space .pod-vortex { left: 0%; top: 62%; width: 150vmax; }
   /* the tilt squashes the rings into close dotted lines on a narrow screen, so phones get a much
      wider spacing (still tightening on scroll) */
-  .page-space .pod-vortex span { --ring-gap: calc(22% - var(--scroll, 0) * 12%); }
+  .page-space .pod-vortex span { --ring-gap: calc(22% - var(--ring-step, 0) * 12%); }
   .page-space .pod-particles {
     -webkit-mask-image: radial-gradient(90% 45% at 100% 0%, #000, rgba(0, 0, 0, 0.2) 60%, transparent 90%);
             mask-image: radial-gradient(90% 45% at 100% 0%, #000, rgba(0, 0, 0, 0.2) 60%, transparent 90%);
@@ -1603,6 +1637,25 @@ html.a11y-big-cursor, html.a11y-big-cursor * {
 .legal ul { list-style: disc; padding-inline-start: 1.4em; margin: 0.5rem 0 1rem; display: grid; gap: 0.4rem; }
 .legal a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .legal .updated { color: var(--text-mute); font-size: 0.9rem; margin-top: 2.5rem; }
+
+/* ==========================================================================
+   Unified type: headings are set in Assistant like the hero name and podcast title,
+   so the weights the old serif used (400/500) are raised to suit a sans-serif.
+   ========================================================================== */
+:root[lang] .section-head h2,
+:root[lang] .contact h2,
+:root[lang] .podcast-body h2,
+:root[lang] .legal h1 { font-weight: 800; letter-spacing: -0.01em; line-height: 1.05; }
+:root[lang] .display,
+:root[lang] .statement q { font-weight: 700; letter-spacing: -0.01em; }
+:root[lang] .service h3,
+:root[lang] .legal h2 { font-weight: 700; letter-spacing: 0; }
+:root[lang] .hero-sub,
+:root[lang] .contact-email { font-weight: 600; letter-spacing: 0; }
+:root[lang] .about-lead .big { font-weight: 500; letter-spacing: 0; line-height: 1.4; }
+:root[lang] .stat .n { font-weight: 800; letter-spacing: 0; }
+:root[lang] .brand { font-weight: 700; letter-spacing: 0; }
+@media (max-width: 860px) { :root[lang] .nav-links a { font-weight: 700; } }
 
 /* ==========================================================================
    Light theme (opt-in via the header toggle — data-theme="light" on <html>)
