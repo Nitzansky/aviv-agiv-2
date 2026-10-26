@@ -362,9 +362,34 @@ body.menu-open .menu-toggle span::after  { top: 0; transform: rotate(-45deg); }
   /* thin cyan rim keeps the black shirt from merging into the navy page */
   filter: drop-shadow(0 0 1px rgba(79, 208, 227, 0.45));
 }
-/* phones: hero sized by its content, so the portrait sits right on the section's bottom edge */
+/* phones/tablets: name and buttons, then the portrait sized to fit the first screen, then the
+   intro text. The portrait stands on the intro's divider line, so its straight crop reads as
+   intentional. (.hero-text is flattened so its two parts can sit either side of the photo.) */
 @media (max-width: 899px) {
-  .hero-grid { min-height: auto; padding-top: clamp(7rem, 16vh, 9rem); }
+  .hero-grid { min-height: auto; padding-top: clamp(6rem, 13vh, 8rem); gap: 0; }
+  .hero-text { display: contents; }
+  /* name/buttons and portrait share the first grid cell: the portrait sits behind the text,
+     pushed toward the far side and partly off-screen so his face stays clear of the name */
+  .hero-main, .hero-photo { grid-area: 1 / 1; }
+  .hero-main { position: relative; z-index: 1; align-self: start; }
+  .hero-main .hero-title { margin-block: 1rem 1.25rem; }
+  .hero-photo {
+    justify-self: end;
+    align-self: end;
+    width: min(92vw, 440px);
+    margin: 0 0 0 0;
+    margin-inline-end: max(-26vw, -120px);
+    aspect-ratio: 1020 / 860; /* crops the photo at the chest */
+    overflow: hidden;
+  }
+  .hero-photo img { width: 100%; height: auto; }
+  .hero-photo::after { display: none; } /* clipped by the crop; the pool moves to the grid below */
+  .hero-grid { background: radial-gradient(60% 40% at 22% 34%, rgba(2, 7, 12, 0.85), transparent 75%); }
+  :root[dir="ltr"] .hero-grid { background-position: 0 0; background-image: radial-gradient(60% 40% at 78% 34%, rgba(2, 7, 12, 0.85), transparent 75%); }
+  :root[data-theme="light"] .hero-grid { background: none; }
+  .hero-aside { grid-row: 2; max-width: none; }
+  /* the ghost button sits over the shirt: give it a solid page-coloured fill so it stays legible */
+  .hero-cta .btn-ghost { background: var(--bg); }
 }
 /* dark pool behind the portrait: the rings and dots fade out around him. It copies the img box
    (same anchor, height and aspect ratio), so it stays centred on him even where the photo runs
@@ -442,9 +467,6 @@ html.a11y-contrast .hero-title .accent { color: var(--accent); -webkit-text-stro
     width: auto;
     max-width: none;
   }
-  /* the shot crops one arm at the photo's right edge; in RTL the photo sits on the left, so it is
-     mirrored to put that cut against the screen edge instead of beside the text */
-  :root[dir="rtl"] .hero-photo img { transform: scaleX(-1); }
 }
 
 .hero-cta { display: flex; flex-wrap: wrap; gap: 1rem; }

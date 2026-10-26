@@ -17,7 +17,7 @@ Everything not listed here is the client's text verbatim.
 ## Left over from the previous site
 | Where | Text |
 |---|---|
-| Stats | 5 זירות פעילות · 30+ פרקי פודקאסט — **not confirmed, remove or verify** (10+ שנות ניסיון matches the copy) |
+| Stats | 5 זירות פעילות · 30+ פרקי פודקאסט — **not confirmed, remove or verify** (10+ שנות ניסיון matches the copy). Section hidden for now (`hidden` attribute), as is the quote section |
 | Contact form | שם מלא · אימייל · במה אפשר לעזור? · כל השדות הם חובה. · לשליחה · תודה — אחזור אליכם בהקדם. |
 | Form note | לפניות דחופות בנושא משבר — זמין גם בטלפון. — suggest generalising to "לפניות דחופות — זמין גם בטלפון." |
 | Buttons | בואו נדבר |
