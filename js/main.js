@@ -21,6 +21,28 @@
     requestAnimationFrame(raf);
   }
 
+  /* ---- Mobile menu ----
+     Set up before anchor navigation: a link's close-menu listener must run first, because an
+     open menu stops Lenis and locks body scroll, which would swallow the anchor's scrollTo. */
+  const menuToggle = document.querySelector(".menu-toggle");
+  const navLinks = document.querySelector(".nav-links");
+  const setMenu = (open) => {
+    body.classList.toggle("menu-open", open);
+    if (menuToggle) menuToggle.setAttribute("aria-expanded", String(open));
+    if (lenis) open ? lenis.stop() : lenis.start();
+    body.style.overflow = open ? "hidden" : "";
+  };
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => setMenu(!body.classList.contains("menu-open")));
+    navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && body.classList.contains("menu-open")) {
+        setMenu(false);
+        menuToggle.focus();
+      }
+    });
+  }
+
   /* ---- In-page anchor navigation ---- */
   const HEADER_OFFSET = 90;
   /* Center the section's content (its box minus the generous section padding) in the space
@@ -79,26 +101,6 @@
   else window.addEventListener("scroll", () => onScroll(), { passive: true });
   window.addEventListener("resize", () => onScroll(), { passive: true });
   onScroll(0);
-
-  /* ---- Mobile menu ---- */
-  const menuToggle = document.querySelector(".menu-toggle");
-  const navLinks = document.querySelector(".nav-links");
-  const setMenu = (open) => {
-    body.classList.toggle("menu-open", open);
-    if (menuToggle) menuToggle.setAttribute("aria-expanded", String(open));
-    if (lenis) open ? lenis.stop() : lenis.start();
-    body.style.overflow = open ? "hidden" : "";
-  };
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", () => setMenu(!body.classList.contains("menu-open")));
-    navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && body.classList.contains("menu-open")) {
-        setMenu(false);
-        menuToggle.focus();
-      }
-    });
-  }
 
   /* ---- Scroll reveal ---- */
   const reveals = document.querySelectorAll(".reveal");

@@ -176,15 +176,25 @@ ul { list-style: none; }
   inset-inline: 0;
   z-index: 100;
   padding-block: 1.5rem;
-  transition: padding 0.4s var(--ease), background 0.4s var(--ease),
-              border-color 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+  transition: padding 0.4s var(--ease), border-color 0.4s var(--ease);
   border-bottom: 1px solid transparent;
 }
-.site-header.scrolled {
-  padding-block: 0.85rem;
+/* The scrolled "glass" lives on a pseudo-element: a backdrop-filter on the header itself would
+   make it the containing block of the fixed mobile menu, trapping the menu inside the header bar. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(7, 18, 28, 0.72);
   backdrop-filter: blur(14px) saturate(150%);
   -webkit-backdrop-filter: blur(14px) saturate(150%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+.site-header.scrolled::before { opacity: 1; }
+.site-header.scrolled {
+  padding-block: 0.85rem;
   border-bottom-color: var(--line-soft);
 }
 
@@ -1099,8 +1109,10 @@ html.a11y-contrast .pod-outline { -webkit-text-stroke-color: #ffe000; text-shado
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
-    background: rgba(7, 18, 28, 0.97);
-    backdrop-filter: blur(10px);
+    /* frosted glass, like the desktop header: the page stays faintly visible behind the links */
+    background: rgba(7, 18, 28, 0.6);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-12px);
@@ -1276,14 +1288,14 @@ html.lenis, html.lenis body { height: auto; }
 .page-space .pod-vortex span { opacity: 0.45; }
 /* rings start wide apart at the top of the page and draw closer together while scrolling */
 .page-space .pod-vortex span { --ring-gap: calc(13% - var(--scroll, 0) * 8%); }
-@media (prefers-reduced-motion: reduce) {
-  .page-space .pod-vortex span { --ring-gap: 6%; }
-}
-html.a11y-stop-motion .page-space .pod-vortex span { --ring-gap: 6%; }
+
 @media (max-width: 640px) {
   .page-space { opacity: 0.3; }
   /* same composition as desktop: dots top-right, rings off the left edge, away from the text */
   .page-space .pod-vortex { left: 0%; top: calc(62% - var(--scroll, 0) * 30%); width: 150vmax; }
+  /* the tilt squashes the rings into close dotted lines on a narrow screen, so phones get a much
+     wider spacing (still tightening on scroll) */
+  .page-space .pod-vortex span { --ring-gap: calc(22% - var(--scroll, 0) * 12%); }
   .page-space .pod-particles {
     -webkit-mask-image: radial-gradient(90% 45% at 100% 0%, #000, rgba(0, 0, 0, 0.2) 60%, transparent 90%);
             mask-image: radial-gradient(90% 45% at 100% 0%, #000, rgba(0, 0, 0, 0.2) 60%, transparent 90%);
@@ -1302,6 +1314,11 @@ html.a11y-stop-motion .page-space .pod-vortex span { --ring-gap: 6%; }
   opacity: 0.45;
 }
 :root[data-theme="light"] .page-space .pod-vortex span { opacity: 0.45; }
+/* static spacing when motion is off (after the phone rule so it wins there too) */
+@media (prefers-reduced-motion: reduce) {
+  .page-space .pod-vortex span { --ring-gap: 8%; }
+}
+html.a11y-stop-motion .page-space .pod-vortex span { --ring-gap: 8%; }
 html.a11y-contrast .page-space { display: none !important; }
 
 /* ---------- Liquid glass background (whole page) ---------- */
@@ -1617,7 +1634,10 @@ html.a11y-big-cursor, html.a11y-big-cursor * {
     radial-gradient(100% 100% at 50% 120%, rgba(8, 26, 38, 0.05), transparent 55%);
 }
 
-:root[data-theme="light"] .site-header.scrolled { background: rgba(240, 246, 249, 0.78); }
+:root[data-theme="light"] .site-header::before { background: rgba(240, 246, 249, 0.78); }
+@media (max-width: 860px) {
+  :root[data-theme="light"] .nav-links { background: rgba(240, 246, 249, 0.62); }
+}
 
 /* "Glass" surfaces were tinted white to lift off a dark bg — tint dark instead */
 :root[data-theme="light"] .service { background: rgba(8, 26, 38, 0.03); box-shadow: inset 0 1px 0 rgba(8, 26, 38, 0.05); }
